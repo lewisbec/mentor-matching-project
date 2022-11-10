@@ -28,6 +28,27 @@
   color: #61dafb;
 }
 
+.App-title {
+  background-color: black;
+  color: white;
+  font-weight:375;
+  font-family: roboto;
+  margin: 0px;
+  padding: 10px;
+}
+
+.button {
+	float: left;
+	margin: 10px;
+	width: 100px;
+	height: 100px;
+	opacity: 0.6;
+}
+
+.button:hover {
+	opacity: 1;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
