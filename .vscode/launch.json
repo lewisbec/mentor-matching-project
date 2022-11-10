@@ -26,6 +26,20 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/backend/server.js"
+        },
+        {
+            "name": "React Build",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/frontend",
+            "runtimeArgs": [
+                "run",
+                "build"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
         }
     ],
     "compounds": [
