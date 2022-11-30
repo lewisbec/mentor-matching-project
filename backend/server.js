@@ -23,9 +23,9 @@ function fromDatastore(item) {
 
 /* ------------- Begin Model Functions ------------- */
 
-function add_user(name, email) {
+function add_user(name, email, user_id) {
     var key = datastore.key(USERS)
-    const new_user = { "name": name, "email": email }
+    const new_user = { "name": name, "email": email, "user_id": user_id }
     return datastore.save({ "key": key, "data": new_user }).then((user) => { return user })
 }
 
@@ -43,6 +43,47 @@ function get_questions() {
     });
 }
 
+function get_users() {
+    const q = datastore.createQuery(USERS);
+
+    return datastore.runQuery(q).then((users) => {
+        return users[0].map(fromDatastore);
+    })
+}
+
+function get_user(user_id) {
+    const q = datastore.createQuery(USERS);
+    return datastore.runQuery(q).then((users) => {
+        users[0].map(fromDatastore);
+        for (let user of users[0]) {
+            console.log(user.id)
+            if (user.user_id === user_id) {
+                console.log(user)
+                return user
+            }
+        }
+    })
+}
+
+function add_user_answers(user_id, questions) {
+    
+    // find the user that matches the id
+    return get_user(user_id).then((user) => {
+        console.log(questions)
+        const key = datastore.key([USERS, parseInt(user.id, 10)]);
+
+        // update that user to have the questions in the form needed
+        user.type = questions.type
+        user.questions = questions
+        user.questions.type = undefined;
+
+        return datastore.save({"key": key, "data": user}).then(() => {
+            return user
+        })
+    })
+
+
+}
 
 /* ------------- End Model Functions ------------- */
 
@@ -50,20 +91,16 @@ function get_questions() {
 
 /* ------------- Begin Routes --------------- */
 
-app.get('/questions', function (req, res) {
-    get_questions().then(questions => {
-        res.status(200).json(questions[0])
+app.get('/users', function (req, res) {
+    get_users().then(users => {
+        res.status(200).json(users);
     })
-})
 
-
-login.get('/', function (req, res) {
-    res.send('Login route here with Auth0')
 })
 
 app.post('/users', function (req, res) {
     console.log(req.body)
-    add_user(req.body.name, req.body.email).then((user) => {
+    add_user(req.body.name, req.body.email, req.body.user_id).then((user) => {
         res.status(201).json(user);
     })
 })
@@ -76,12 +113,21 @@ app.post('/questions', function (req, res) {
     })
 })
 
-app.post('/mentee-questions', function (req, res) {
-    var questions = req.body.questions
-    add_questions(questions).then((question) => {
-        res.status(201).json(question);
+app.get('/questions', function (req, res) {
+    get_questions().then(questions => {
+        res.status(200).json(questions[0])
     })
 })
+
+app.post('/users/:user_id/questions', function (req, res) {
+    var user_id = req.params.user_id;
+    var body = req.body;
+    add_user_answers(user_id, body).then(result => {
+        res.status(200).json(result);
+    })
+
+})
+
 /* ------------- End Routes ------------- */
 
 
