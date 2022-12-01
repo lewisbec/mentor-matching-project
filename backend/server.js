@@ -91,6 +91,13 @@ function add_user_answers(user_id, questions) {
 
 /* ------------- Begin Routes --------------- */
 
+app.get('/users/:user_id', function (req, res) {
+    get_user(req.params.user_id).then(user => {
+        res.status(200).json(user);
+    })
+
+})
+
 app.get('/users', function (req, res) {
     get_users().then(users => {
         res.status(200).json(users);
