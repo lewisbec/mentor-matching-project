@@ -7,7 +7,10 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 export const Questions = () => {
   const { user } = useAuth0();
-  const { qs } = fetch("localhost/questions").then((response) => response.json())
+  const { qs } = fetch("http://127.0.0.1:8080/questions",
+    {
+        method: 'POST',
+    }).then((response) => response.json())
 
   return (
     <Container className="mb-5">
