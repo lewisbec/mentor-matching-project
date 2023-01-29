@@ -23,10 +23,48 @@ function fromDatastore(item) {
 
 /* ------------- Begin Model Functions ------------- */
 
-function add_user(name, email, user_id) {
+/* CREATE a user */
+async function add_user(name, email, user_id) {
     var key = datastore.key(USERS)
-    const new_user = { "name": name, "email": email, "user_id": user_id }
-    return datastore.save({ "key": key, "data": new_user }).then((user) => { return user })
+    const new_user = await datastore.save({ "key": key, "data": { "name": name, "email": email, "user_id": user_id } });
+    return new_user;
+}
+
+/* READ all users */
+async function get_users() {
+    const q = datastore.createQuery(USERS);
+    users = await datastore.runQuery(q);
+    return users[0].map(fromDatastore);
+}
+
+/* READ a user by their user ID */
+async function get_user(user_id) {
+    const q = datastore.createQuery(USERS);
+    const users = await datastore.runQuery(q)
+    users[0].map(fromDatastore);
+
+    // iterate through all users until finding the matching user_id
+    for (let user of users[0]) {
+        if (user.user_id === user_id) {
+            return user
+        }
+    }
+}
+
+/* UPDATE - add a user's question answers */
+async function add_user_answers(user_id, questions) {
+    // find the user that matches the id
+    const user = await get_user(user_id)
+    const key = datastore.key([USERS, parseInt(user.id, 10)]);
+
+    // update that user to have a mentor/mentee type and save their questions
+    user.type = questions.type
+    user.questions = questions
+    user.questions.type = undefined;    // remove the type from questions since it is now saved on
+
+    // save to datastore
+    const updated_user = await datastore.save({ "key": key, "data": user })
+    return updated_user
 }
 
 function add_questions(mentors, mentees) {
@@ -43,47 +81,7 @@ function get_questions() {
     });
 }
 
-function get_users() {
-    const q = datastore.createQuery(USERS);
 
-    return datastore.runQuery(q).then((users) => {
-        return users[0].map(fromDatastore);
-    })
-}
-
-function get_user(user_id) {
-    const q = datastore.createQuery(USERS);
-    return datastore.runQuery(q).then((users) => {
-        users[0].map(fromDatastore);
-        for (let user of users[0]) {
-            console.log(user.id)
-            if (user.user_id === user_id) {
-                console.log(user)
-                return user
-            }
-        }
-    })
-}
-
-function add_user_answers(user_id, questions) {
-    
-    // find the user that matches the id
-    return get_user(user_id).then((user) => {
-        console.log(questions)
-        const key = datastore.key([USERS, parseInt(user.id, 10)]);
-
-        // update that user to have the questions in the form needed
-        user.type = questions.type
-        user.questions = questions
-        user.questions.type = undefined;
-
-        return datastore.save({"key": key, "data": user}).then(() => {
-            return user
-        })
-    })
-
-
-}
 
 /* ------------- End Model Functions ------------- */
 
@@ -91,25 +89,26 @@ function add_user_answers(user_id, questions) {
 
 /* ------------- Begin Routes --------------- */
 
-app.get('/users/:user_id', function (req, res) {
-    get_user(req.params.user_id).then(user => {
-        res.status(200).json(user);
-    })
-
+app.post('/users', async function (req, res) {
+    const user = await add_user(req.body.name, req.body.email, req.body.user_id)
+    res.status(201).json(user);
 })
 
-app.get('/users', function (req, res) {
-    get_users().then(users => {
-        res.status(200).json(users);
-    })
-
+app.get('/users/:user_id', async function (req, res) {
+    const user = await get_user(req.params.user_id)
+    res.status(200).json(user);
 })
 
-app.post('/users', function (req, res) {
-    console.log(req.body)
-    add_user(req.body.name, req.body.email, req.body.user_id).then((user) => {
-        res.status(201).json(user);
-    })
+app.get('/users', async function (req, res) {
+    const users = await get_users()
+    res.status(200).json(users);
+})
+
+app.post('/users/:user_id/questions', async function (req, res) {
+    var user_id = req.params.user_id;
+    var questions = req.body.questions;
+    const user = await add_user_answers(user_id, questions)
+    res.status(200).json(user);
 })
 
 app.post('/questions', function (req, res) {
@@ -126,14 +125,7 @@ app.get('/questions', function (req, res) {
     })
 })
 
-app.post('/users/:user_id/questions', function (req, res) {
-    var user_id = req.params.user_id;
-    var body = req.body;
-    add_user_answers(user_id, body).then(result => {
-        res.status(200).json(result);
-    })
 
-})
 
 /* ------------- End Routes ------------- */
 
