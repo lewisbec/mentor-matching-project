@@ -67,6 +67,13 @@ async function add_user_answers(user_id, questions) {
     return updated_user
 }
 
+/* DELETE - delete a user by their user_id */
+async function delete_user(user_id) {
+    const key = datastore.key([USERS, parseInt(user_id, 10)]);
+    datastore.delete(key)
+}
+
+
 function add_questions(mentors, mentees) {
     var key = datastore.key(QUESTIONS)
     const new_question = { "mentor_questions": mentors, "mentees": mentees }
@@ -109,6 +116,12 @@ app.post('/users/:user_id/questions', async function (req, res) {
     var questions = req.body.questions;
     const user = await add_user_answers(user_id, questions)
     res.status(200).json(user);
+})
+
+app.delete('/users/:user_id', async function (req, res) {
+    var user_id = req.params.user_id;
+    await delete_user(user_id)
+    res.status(204).end()
 })
 
 app.post('/questions', function (req, res) {
