@@ -5,12 +5,13 @@ import Highlight from "../components/Highlight";
 
 export const UserlistComponent = () => {
   var serverData, setServerData = useState(null);
-
+  // https://create-react-app.dev/docs/proxying-api-requests-in-development/
   useEffect(() => {
-    fetch('localhost:8080/users')
+    fetch('/api/users')
     .then(response => {
       if(response.ok) {
-        return response.json();
+        console.log(response);
+        return response.body;
       }
       throw response;
     })

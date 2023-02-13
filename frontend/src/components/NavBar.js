@@ -87,6 +87,17 @@ const NavBar = () => {
                     User List
                   </NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/createUser"
+                    exact
+                    activeClassName="router-link-exact-active"
+                  >
+                    
+                    Create User
+                  </NavLink>
+                </NavItem>
             </Nav>
             <Nav className="d-none d-md-block" navbar>
               {!isAuthenticated && (
@@ -95,7 +106,6 @@ const NavBar = () => {
                     id="qsLoginBtn"
                     color="primary"
                     className="btn-margin"
-                    onClick={() => loginWithRedirect()}
                   >
                     Log in
                   </Button>

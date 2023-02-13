@@ -10,6 +10,7 @@ import Profile from "./views/Profile";
 import ExternalApi from "./views/ExternalApi";
 import Questions from "./views/Questions";
 import Userlist from "./views/UserList";
+import CreateUser from "./views/TempCreateUser";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
 
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/external-api" component={ExternalApi} />
             <Route path="/survey" component={Questions} />
             <Route path="/userlist" component={Userlist} />
+            <Route path="/createUser" component={CreateUser} />
           </Switch>
         </Container>
         <Footer />
