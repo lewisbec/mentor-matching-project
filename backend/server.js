@@ -1,9 +1,8 @@
 const express = require("express");
+const path = require('path');
 const app = express();
 
-const router = express.Router();
-const login = express.Router();
-const users = express.Router();
+
 
 // body parser for the req.body
 const bodyParser = require("body-parser");
@@ -142,11 +141,10 @@ app.get("/questions", function (req, res) {
     });
 });
 
+app.use(express.static(path.join(__dirname, '../frontend/build/')));
+
 /* ------------- End Routes ------------- */
 
-app.use("/users", users);
-app.use("/questions", router);
-app.use("/login", login);
 
 // Listen to the App Engine-specified port, or 8080 otherwise
 const PORT = process.env.PORT || 8080;
