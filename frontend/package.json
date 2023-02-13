@@ -2,6 +2,7 @@
   "name": "auth0-react-sample",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8080",
   "scripts": {
     "start": "npm-run-all --parallel spa api-server",
     "build": "react-scripts build",
