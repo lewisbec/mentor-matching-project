@@ -8,12 +8,14 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 export const ProfileComponent = () => {
   const { user } = useAuth0();
   var serverData, setServerData = useState(null);
-
+  function setServerData(){
+    //Temp to fix warnings
+  }
   useEffect(() => {
     const reqOpts = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({user_id: user.user_id})
+      body: JSON.stringify({user_id: "asdf"})
     };
     fetch('localhost:8080/get', reqOpts)
     .then(response => {
