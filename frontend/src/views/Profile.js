@@ -45,6 +45,8 @@ export const ProfileComponent = () => {
       </Row>
       <Row>
         <Highlight>{JSON.stringify(user, null, 2)}</Highlight>
+      </Row>
+      <Row>
         <Highlight>{JSON.stringify(serverData, null, 2)}</Highlight>
       </Row>
     </Container>
