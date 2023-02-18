@@ -53,7 +53,38 @@ export const Questions = () => {
           <input name="interests_input_3"/>
         </label>
         <br/>
+        <br/>
+        <h1>Experience</h1>
         <hr />
+        <label>
+          Qualifications (employment, education, etc.): <input name="experience_input_1"/>
+          <br/>
+          <input name="experience_input_2"/>
+          <br/>
+          <input name="experience_input_3"/>
+        </label>
+        <br/>
+        <br/>
+        <h1>Skill Level</h1>
+        <div>
+        <label>
+          How would you rank your skill level?
+          <select>
+          <option value="Novice">Novice</option>
+          <option value="Advanced-Beginner">Advanced-Beginner</option>
+          <option value="Competent">Competent</option>
+          <option value="Proficient">Proficient</option>
+          <option value="Expert">Expert</option>
+          </select>
+        </label>
+        </div>
+        <br/>
+        <br/>
+        <h1>Additional Information</h1>
+        <label>Type here:<input addInfo="add_info"/></label>
+        <hr />
+        <br/>
+        <br/>
         <button type="submit">Submit</button>
       </form>
     </>
