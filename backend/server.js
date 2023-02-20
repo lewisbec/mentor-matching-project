@@ -62,7 +62,6 @@ async function add_user_answers(user_id, questions, type) {
     user.type = type;
     user.questions = questions;
 
-    console.log(user);
     // save to datastore
     const updated_user = await datastore.save({ key: key, data: user });
     return updated_user;
@@ -72,26 +71,24 @@ async function add_user_answers(user_id, questions, type) {
 async function delete_user(user_id) {
     // get the matching user id
     const user = await get_user(user_id);
-    console.log(user)
     const key = datastore.key([USERS, parseInt(user.id, 10)]);
 
-    datastore.delete(key);
+    await datastore.delete(key);
 }
 
-function add_questions(mentors, mentees) {
+/* CREATE - add a question */
+async function add_questions(type, question, options) {
     var key = datastore.key(QUESTIONS);
-    const new_question = { mentor_questions: mentors, mentees: mentees };
-    return datastore.save({ key: key, data: new_question }).then((question) => {
-        return question;
-    });
+    const new_question = { type: type, question: question, options: options };
+    const question = await datastore.save({ key: key, data: new_question });
+    return question;
 }
 
-function get_questions() {
-    const q = datastore.createQuery(QUESTIONS);
-    return datastore.runQuery(q).then((entities) => {
-        console.log(entities);
-        return entities[0].map(fromDatastore);
-    });
+/* READ - get all questions for specified type of user */
+async function get_questions(type) {
+    const q = datastore.createQuery(type);
+    const questions = await datastore.runQuery(q)
+    return questions[0].map(fromDatastore)
 }
 
 /* ------------- End Model Functions ------------- */
@@ -127,18 +124,18 @@ app.delete("/users/:user_id", async function (req, res) {
     res.status(204).end();
 });
 
-app.post("/questions", function (req, res) {
-    var mentor_questions = req.body.mentors;
-    var mentee_questions = req.body.mentees;
-    add_questions(mentor_questions, mentee_questions).then((question) => {
-        res.status(201).json(question);
-    });
+app.post("/questions", async function (req, res) {
+    const type = req.body.type;
+    const question = req.body.question;
+    const options = req.body.options;
+    const response = await add_questions(type, question, options)
+    res.status(201).json(response);
 });
 
-app.get("/questions", function (req, res) {
-    get_questions().then((questions) => {
-        res.status(200).json(questions[0]);
-    });
+app.get("/questions/:type", async function (req, res) {
+    const type = req.body.type;
+    const questions = await get_questions(type)
+    res.status(200).json(questions[0]);
 });
 
 app.use(express.static(path.join(__dirname, '../frontend/build/')));
