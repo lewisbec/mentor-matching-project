@@ -108,7 +108,7 @@ app.post("/users", async function (req, res) {
 });
 
 app.get("/users/:user_id", async function (req, res) {
-    const user = awaigitt get_user(req.params.user_id);
+    const user = await get_user(req.params.user_id);
     res.status(200).json(user);
 });
 
