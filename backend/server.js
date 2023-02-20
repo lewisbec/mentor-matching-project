@@ -133,7 +133,7 @@ app.post("/questions", async function (req, res) {
 });
 
 app.get("/questions/:type", async function (req, res) {
-    const type = req.body.type;
+    const type = req.params.type;
     const questions = await get_questions(type)
     res.status(200).json(questions[0]);
 });
