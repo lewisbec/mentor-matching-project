@@ -86,9 +86,16 @@ async function add_questions(type, question, options) {
 
 /* READ - get all questions for specified type of user */
 async function get_questions(type) {
-    const q = datastore.createQuery(type);
-    const questions = await datastore.runQuery(q)
-    return questions[0].map(fromDatastore)
+    const q = datastore.createQuery(QUESTIONS);
+    let questions = [];
+    const all_questions = await datastore.runQuery(q)
+    all_questions[0].map(fromDatastore);
+    for (let question of all_questions) {
+        if (question.type === type) {
+            questions.push(question);
+        }
+    };
+    return questions;
 }
 
 /* ------------- End Model Functions ------------- */
@@ -101,7 +108,7 @@ app.post("/users", async function (req, res) {
 });
 
 app.get("/users/:user_id", async function (req, res) {
-    const user = await get_user(req.params.user_id);
+    const user = awaigitt get_user(req.params.user_id);
     res.status(200).json(user);
 });
 
