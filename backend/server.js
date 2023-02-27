@@ -105,8 +105,15 @@ async function get_questions(type) {
 
 /* ------------- End Model Functions ------------- */
 
-/* ------------- Begin Routes --------------- */
+/* ------------- Begin USERS Routes --------------- */
 
+/* REQUEST FORMAT:
+    body: {
+        "name": 'STRING',
+        "email": 'STRING',
+        "user_id": Auth0 authentication number? 
+    }
+*/
 app.post("/users", async function (req, res) {
     const user = await add_user(req.body.name, req.body.email, req.body.user_id);
     res.status(201).json(user);
@@ -122,6 +129,13 @@ app.get("/users", async function (req, res) {
     res.status(200).json(users);
 });
 
+/* REQUEST FORMAT:
+    body: {
+        "user_id": Auth0 authentication number,
+        "questions": {question: answer, question2: answer2, (ctn...)}
+        "type": STRING (mentor/mentee/both)
+    }
+*/
 app.post("/users/:user_id/questions", async function (req, res) {
     var user_id = req.params.user_id;
     var questions = req.body.questions;
@@ -136,6 +150,19 @@ app.delete("/users/:user_id", async function (req, res) {
     res.status(204).end();
 });
 
+/* ------------- End USER Routes ------------- */
+
+
+
+/* ------------- Begin QUESTION Routes --------------- */
+
+/* REQUEST FORMAT:
+    body: {
+        "type": STRING (mentor/mentee/both),
+        "question": STRING,
+        "options": [STRING, STRING, STRING, (ctn...)]
+    }
+*/
 app.post("/questions", async function (req, res) {
     const type = req.body.type;
     const question = req.body.question;
