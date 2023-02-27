@@ -19,6 +19,12 @@ function fromDatastore(item) {
     return item;
 }
 
+// adding this header to allow the client to be able to fetch from their localhost:3000
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    next();
+});
+
 /* ------------- Begin Model Functions ------------- */
 
 /* CREATE a user */
@@ -80,8 +86,7 @@ async function delete_user(user_id) {
 async function add_questions(type, question, options) {
     var key = datastore.key(QUESTIONS);
     const new_question = { type: type, question: question, options: options };
-    const question = await datastore.save({ key: key, data: new_question });
-    return question;
+    return await datastore.save({ key: key, data: new_question });
 }
 
 /* READ - get all questions for specified type of user */
