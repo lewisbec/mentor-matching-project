@@ -141,6 +141,9 @@ app.get("/questions", function (req, res) {
     });
 });
 
+app.get("/test", function (req, res) {
+    res.status(200).send("Success!");
+});
 app.use(express.static(path.join(__dirname, '../frontend/build/')));
 
 /* ------------- End Routes ------------- */

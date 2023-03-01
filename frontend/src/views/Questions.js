@@ -1,14 +1,14 @@
 import React from "react";
 import "../stylesheets/questions.css";
 
-//import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 export const Questions = () => {
-  //const { user } = useAuth0();
-  /*const { qs } = fetch("http://127.0.0.1:8080/questions",
+  const { user } = useAuth0();
+  const { qs } = fetch("http://127.0.0.1:8080/questions",
     {
         method: 'GET',
-    }).then((response) => response.json())*/
+    }).then((response) => response.json())
 
 
     // From https://beta.reactjs.org/reference/react-dom/components/input#displaying-inputs-of-different-types
