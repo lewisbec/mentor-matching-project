@@ -1,20 +1,21 @@
-import React from "react";
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import logo from "../assets/logo.svg";
 
 const Hero = () => {
-  var serverData, setServerData = useState("");
+  const [serverData, setServerData] = useState("");
 
   useEffect(() => {
     fetch("/test")
     .then(response => {
       if(response.ok) {
-        return response.body;
+        return response.text();
       }
       throw response;
     })
     .then(data => {
+      //console.log(data.getReader().read);
       setServerData(data);
+      
     }).catch(error => {
       console.error("Error retrieving user data: " + error);
     })

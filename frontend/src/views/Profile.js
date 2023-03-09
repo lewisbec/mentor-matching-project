@@ -1,13 +1,12 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Container, Row, Col } from "reactstrap";
-import {useEffect, useState} from "react";
 import Highlight from "../components/Highlight";
 import Loading from "../components/Loading";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 export const ProfileComponent = () => {
   const { user } = useAuth0();
-  var serverData, setServerData = useState(null);
+  const [serverData, setServerData] = useState("");
 
   useEffect(() => {
     const reqOpts = {
