@@ -1,14 +1,24 @@
 import React from "react";
 import "../stylesheets/questions.css";
+import Loading from "../components/Loading";
 
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 export const Questions = () => {
   const { user } = useAuth0();
-  const { qs } = fetch("http://127.0.0.1:8080/questions",
+  const { qs } = fetch("/questions",
     {
         method: 'GET',
     }).then((response) => response.json())
+
+    /*
+      Next steps:
+      1. Check if user exists in our database
+        1.1. Populate Questions with responses if they do
+        1.2. Keep everything blank if they don't
+      2. Upon completing the survey, add user to our database with their auth0 ID
+        2.1. If user already exists, make sure to call the proper endpoint
+    */
 
 
     // From https://beta.reactjs.org/reference/react-dom/components/input#displaying-inputs-of-different-types
@@ -60,7 +70,6 @@ export const Questions = () => {
   );
 };
 
-export default Questions;
-/*export default withAuthenticationRequired(Questions, {
+export default withAuthenticationRequired(Questions, {
   onRedirecting: () => <Loading />,
-});*/
+});
