@@ -131,7 +131,7 @@ async function get_matches(user_id) {
     }
 
     // return matches sorted by frequency of highest scores array
-    matches.sort((a,b) => b.score - a.score);
+    matches.sort((a, b) => b.score - a.score);
     return matches;
 
 }
@@ -183,7 +183,15 @@ app.delete("/users/:user_id", async function (req, res) {
     res.status(204).end();
 });
 
-
+/* RESPONSE FORMAT:
+    RETURNS: an array of JSON objects which each represent a user. Sorted by highest to lowest score
+    example response body:
+    [
+    {name: "Jim", email: "jim@gmail.com", score: 5, questions: {gender: "male", experience: 6, interest: "web development"}},
+    {name: "Will", email: "will@gmail.com", score: 3 questions: {gender: "male", experience: 6, interest: "research"}}, 
+    {name: "Pam", email: "pam@gmail.com", score: 2, questions: {gender: "female", experience: 20, interest: "game development"}},
+    ]
+*/
 app.get("/:user_id/matches", async function (req, res) {
     var user_id = req.params.user_id;
     const matches = await get_matches(user_id);
