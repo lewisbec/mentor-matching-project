@@ -131,6 +131,7 @@ async function get_matches(user_id) {
     }
 
     // return matches sorted by frequency of highest scores array
+    matches.sort((a,b) => b.score - a.score);
     return matches;
 
 }
