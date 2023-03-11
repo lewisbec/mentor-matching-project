@@ -103,6 +103,38 @@ async function get_questions(type) {
     return questions;
 }
 
+/* GET - Get all matches for the specified user */
+async function get_matches(user_id) {
+    const user = await get_user(user_id);
+    const matches = [];
+
+    // get all users of opposite type
+    let options = await get_users();
+    options = options.filter((potential_user) => potential_user.type !== user.type);
+
+
+    let optionScore;
+    // iterate through questions/answers key value. compare it to the answer that the mentor has: if matching, add 1 to match score
+    for (let option of options) {
+        // iterate options and calculate score: score+=1 if they have the same answer to questions
+        optionScore = 0;
+        for (let question in option.questions) {
+            if (option.questions[question] === user.questions[question]) {
+                optionScore = optionScore + 1;
+            }
+        }
+
+        // put final score and user in the matches array
+        option.score = optionScore;
+        matches.push(option);
+
+    }
+
+    // return matches sorted by frequency of highest scores array
+    return matches;
+
+}
+
 /* ------------- End Model Functions ------------- */
 
 /* ------------- Begin USERS Routes --------------- */
@@ -148,6 +180,13 @@ app.delete("/users/:user_id", async function (req, res) {
     var user_id = req.params.user_id;
     await delete_user(user_id);
     res.status(204).end();
+});
+
+
+app.get("/:user_id/matches", async function (req, res) {
+    var user_id = req.params.user_id;
+    const matches = await get_matches(user_id);
+    res.status(200).json(matches);
 });
 
 /* ------------- End USER Routes ------------- */
