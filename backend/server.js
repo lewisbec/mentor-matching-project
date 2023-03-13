@@ -119,14 +119,15 @@ async function get_matches(user_id) {
         // iterate options and calculate score: score+=1 if they have the same answer to questions
         optionScore = 0;
         for (let question in option.questions) {
-            if (option.questions[question] === user.questions[question]) {
-                optionScore = optionScore + 1;
+            const optionWords = option.questions[question].split(" ");
+            const userWords = user.questions[question].split(" ");
+            for (let word of optionWords) {
+                if (userWords.includes(word)) {
+                    optionScore++;
+                    break;
+                }
             }
         }
-
-        // put final score and user in the matches array
-        option.score = optionScore;
-        matches.push(option);
 
     }
 
@@ -177,13 +178,21 @@ app.post("/users/:user_id/questions", async function (req, res) {
     res.status(200).json(user);
 });
 
+/*
 app.delete("/users/:user_id", async function (req, res) {
     var user_id = req.params.user_id;
     await delete_user(user_id);
     res.status(204).end();
 });
+*/
 
-/* RESPONSE FORMAT:
+/* 
+REQUEST FORMAT:
+    Method: POST
+    Body: {"user_id": {user_id}}
+    example: {"user_id": "4"}
+
+RESPONSE FORMAT:
     RETURNS: an array of JSON objects which each represent a user. Sorted by highest to lowest score
     example response body:
     [
@@ -192,8 +201,8 @@ app.delete("/users/:user_id", async function (req, res) {
     {name: "Pam", email: "pam@gmail.com", score: 2, questions: {gender: "female", experience: 20, interest: "game development"}},
     ]
 */
-app.get("/:user_id/matches", async function (req, res) {
-    var user_id = req.params.user_id;
+app.post("/matches", async function (req, res) {
+    var user_id = req.body.user_id;
     const matches = await get_matches(user_id);
     res.status(200).json(matches);
 });
@@ -211,6 +220,7 @@ app.get("/:user_id/matches", async function (req, res) {
         "options": [STRING, STRING, STRING, (ctn...)]
     }
 */
+/*
 app.post("/questions", async function (req, res) {
     const type = req.body.type;
     const question = req.body.question;
@@ -218,6 +228,7 @@ app.post("/questions", async function (req, res) {
     const response = await add_questions(type, question, options)
     res.status(201).json(response);
 });
+*/
 
 app.get("/questions/:type", async function (req, res) {
     const type = req.params.type;
