@@ -225,6 +225,9 @@ app.get("/questions/:type", async function (req, res) {
     res.status(200).json(questions[0]);
 });
 
+app.get("/test", function (req, res) {
+    res.status(200).send("Success");
+});
 app.use(express.static(path.join(__dirname, '../frontend/build/')));
 
 /* ------------- End Routes ------------- */

@@ -1,15 +1,14 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Container, Row, Col } from "reactstrap";
-
 import Highlight from "../components/Highlight";
 import Loading from "../components/Loading";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 export const ProfileComponent = () => {
   const { user } = useAuth0();
-  //var serverData, setServerData = useState(null);
+  const [serverData, setServerData] = useState("");
 
-  /*useEffect(() => {
+  useEffect(() => {
     const reqOpts = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -28,10 +27,8 @@ export const ProfileComponent = () => {
       console.error("Error retrieving user data: " + error);
     })
   }, []);
-        <Row>
-        <Highlight>{JSON.stringify(serverData, null, 2)}</Highlight>
-      </Row>
-  */
+        
+  
   return (
     <Container className="mb-5">
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
@@ -49,6 +46,9 @@ export const ProfileComponent = () => {
       </Row>
       <Row>
         <Highlight>{JSON.stringify(user, null, 2)}</Highlight>
+      </Row>
+      <Row>
+        <Highlight>{JSON.stringify(serverData, null, 2)}</Highlight>
       </Row>
 
     </Container>
