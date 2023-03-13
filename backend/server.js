@@ -119,14 +119,15 @@ async function get_matches(user_id) {
         // iterate options and calculate score: score+=1 if they have the same answer to questions
         optionScore = 0;
         for (let question in option.questions) {
-            if (option.questions[question] === user.questions[question]) {
-                optionScore = optionScore + 1;
+            const optionWords = option.questions[question].split(" ");
+            const userWords = user.questions[question].split(" ");
+            for (let word of optionWords) {
+                if (userWords.includes(word)) {
+                    optionScore++;
+                    break;
+                }
             }
         }
-
-        // put final score and user in the matches array
-        option.score = optionScore;
-        matches.push(option);
 
     }
 
