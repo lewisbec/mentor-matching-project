@@ -19,6 +19,12 @@ function fromDatastore(item) {
     return item;
 }
 
+// adding this header to allow the client to be able to fetch from their localhost:3000
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    next();
+});
+
 /* ------------- Begin Model Functions ------------- */
 
 /* CREATE a user */
@@ -62,7 +68,6 @@ async function add_user_answers(user_id, questions, type) {
     user.type = type;
     user.questions = questions;
 
-    console.log(user);
     // save to datastore
     const updated_user = await datastore.save({ key: key, data: user });
     return updated_user;
@@ -72,32 +77,76 @@ async function add_user_answers(user_id, questions, type) {
 async function delete_user(user_id) {
     // get the matching user id
     const user = await get_user(user_id);
-    console.log(user)
     const key = datastore.key([USERS, parseInt(user.id, 10)]);
 
-    datastore.delete(key);
+    await datastore.delete(key);
 }
 
-function add_questions(mentors, mentees) {
+/* CREATE - add a question */
+async function add_questions(type, question, options) {
     var key = datastore.key(QUESTIONS);
-    const new_question = { mentor_questions: mentors, mentees: mentees };
-    return datastore.save({ key: key, data: new_question }).then((question) => {
-        return question;
-    });
+    const new_question = { type: type, question: question, options: options };
+    return await datastore.save({ key: key, data: new_question });
 }
 
-function get_questions() {
+/* READ - get all questions for specified type of user */
+async function get_questions(type) {
     const q = datastore.createQuery(QUESTIONS);
-    return datastore.runQuery(q).then((entities) => {
-        console.log(entities);
-        return entities[0].map(fromDatastore);
-    });
+    let questions = [];
+    const all_questions = await datastore.runQuery(q)
+    all_questions[0].map(fromDatastore);
+    for (let question of all_questions) {
+        if (question.type === type) {
+            questions.push(question);
+        }
+    };
+    return questions;
+}
+
+/* GET - Get all matches for the specified user */
+async function get_matches(user_id) {
+    const user = await get_user(user_id);
+    const matches = [];
+
+    // get all users of opposite type
+    let options = await get_users();
+    options = options.filter((potential_user) => potential_user.type !== user.type);
+
+
+    let optionScore;
+    // iterate through questions/answers key value. compare it to the answer that the mentor has: if matching, add 1 to match score
+    for (let option of options) {
+        // iterate options and calculate score: score+=1 if they have the same answer to questions
+        optionScore = 0;
+        for (let question in option.questions) {
+            if (option.questions[question] === user.questions[question]) {
+                optionScore = optionScore + 1;
+            }
+        }
+
+        // put final score and user in the matches array
+        option.score = optionScore;
+        matches.push(option);
+
+    }
+
+    // return matches sorted by frequency of highest scores array
+    matches.sort((a, b) => b.score - a.score);
+    return matches;
+
 }
 
 /* ------------- End Model Functions ------------- */
 
-/* ------------- Begin Routes --------------- */
+/* ------------- Begin USERS Routes --------------- */
 
+/* REQUEST FORMAT:
+    body: {
+        "name": 'STRING',
+        "email": 'STRING',
+        "user_id": Auth0 authentication number? 
+    }
+*/
 app.post("/users", async function (req, res) {
     const user = await add_user(req.body.name, req.body.email, req.body.user_id);
     res.status(201).json(user);
@@ -113,6 +162,13 @@ app.get("/users", async function (req, res) {
     res.status(200).json(users);
 });
 
+/* REQUEST FORMAT:
+    body: {
+        "user_id": Auth0 authentication number,
+        "questions": {question: answer, question2: answer2, (ctn...)}
+        "type": STRING (mentor/mentee/both)
+    }
+*/
 app.post("/users/:user_id/questions", async function (req, res) {
     var user_id = req.params.user_id;
     var questions = req.body.questions;
@@ -127,18 +183,46 @@ app.delete("/users/:user_id", async function (req, res) {
     res.status(204).end();
 });
 
-app.post("/questions", function (req, res) {
-    var mentor_questions = req.body.mentors;
-    var mentee_questions = req.body.mentees;
-    add_questions(mentor_questions, mentee_questions).then((question) => {
-        res.status(201).json(question);
-    });
+/* RESPONSE FORMAT:
+    RETURNS: an array of JSON objects which each represent a user. Sorted by highest to lowest score
+    example response body:
+    [
+    {name: "Jim", email: "jim@gmail.com", score: 5, questions: {gender: "male", experience: 6, interest: "web development"}},
+    {name: "Will", email: "will@gmail.com", score: 3 questions: {gender: "male", experience: 6, interest: "research"}}, 
+    {name: "Pam", email: "pam@gmail.com", score: 2, questions: {gender: "female", experience: 20, interest: "game development"}},
+    ]
+*/
+app.get("/:user_id/matches", async function (req, res) {
+    var user_id = req.params.user_id;
+    const matches = await get_matches(user_id);
+    res.status(200).json(matches);
 });
 
-app.get("/questions", function (req, res) {
-    get_questions().then((questions) => {
-        res.status(200).json(questions[0]);
-    });
+/* ------------- End USER Routes ------------- */
+
+
+
+/* ------------- Begin QUESTION Routes --------------- */
+
+/* REQUEST FORMAT:
+    body: {
+        "type": STRING (mentor/mentee/both),
+        "question": STRING,
+        "options": [STRING, STRING, STRING, (ctn...)]
+    }
+*/
+app.post("/questions", async function (req, res) {
+    const type = req.body.type;
+    const question = req.body.question;
+    const options = req.body.options;
+    const response = await add_questions(type, question, options)
+    res.status(201).json(response);
+});
+
+app.get("/questions/:type", async function (req, res) {
+    const type = req.params.type;
+    const questions = await get_questions(type)
+    res.status(200).json(questions[0]);
 });
 
 app.use(express.static(path.join(__dirname, '../frontend/build/')));

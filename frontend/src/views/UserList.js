@@ -1,36 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row } from "reactstrap";
 
-//import Highlight from "../components/Highlight";
+import Highlight from "../components/Highlight";
 
 export const UserlistComponent = () => {
-  //var serverData, setServerData = useState(null);
+  const [serverData, setServerData] = useState(null);
 
+  useEffect(() => {
+    fetch('http://localhost:8080/users')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then(data => {
+        setServerData(data);
+      })
+      .catch(error => {
+        console.error("Error retrieving user data: " + error);
+      });
+  }, []);
 
-  // https://create-react-app.dev/docs/proxying-api-requests-in-development/
-  /*useEffect(() => {
-    fetch('/api/users')
-    .then(response => {
-      if(response.ok) {
-        console.log(response);
-        return response.body;
-      }
-      throw response;
-    })
-    .then(data => {
-      setServerData(data);
-    }).catch(error => {
-      console.error("Error retrieving user data: " + error);
-    })
-  }, []);*/
-  //<Highlight>{JSON.stringify(serverData, null, 2)}</Highlight>
   return (
     <Container className="mb-5">
+      <Row>User List</Row>
       <Row>
-        User List
-      </Row>
-      <Row>
-        
+        <Highlight>{JSON.stringify(serverData, null, 2)}</Highlight>
       </Row>
     </Container>
   );
