@@ -178,11 +178,13 @@ app.post("/users/:user_id/questions", async function (req, res) {
     res.status(200).json(user);
 });
 
+/*
 app.delete("/users/:user_id", async function (req, res) {
     var user_id = req.params.user_id;
     await delete_user(user_id);
     res.status(204).end();
 });
+*/
 
 /* 
 REQUEST FORMAT:
@@ -218,6 +220,7 @@ app.post("/matches", async function (req, res) {
         "options": [STRING, STRING, STRING, (ctn...)]
     }
 */
+/*
 app.post("/questions", async function (req, res) {
     const type = req.body.type;
     const question = req.body.question;
@@ -225,6 +228,7 @@ app.post("/questions", async function (req, res) {
     const response = await add_questions(type, question, options)
     res.status(201).json(response);
 });
+*/
 
 app.get("/questions/:type", async function (req, res) {
     const type = req.params.type;
