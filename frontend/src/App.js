@@ -11,6 +11,7 @@ import ExternalApi from "./views/ExternalApi";
 import Questions from "./views/Questions";
 import Userlist from "./views/UserList";
 import CreateUser from "./views/TempCreateUser";
+import Matches from "./views/Matches";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
 
@@ -44,6 +45,7 @@ const App = () => {
             <Route path="/survey" component={Questions} />
             <Route path="/userlist" component={Userlist} />
             <Route path="/createUser" component={CreateUser} />
+            <Route path="/matching" component={Matches} />
           </Switch>
         </Container>
         <Footer />
