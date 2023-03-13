@@ -184,7 +184,13 @@ app.delete("/users/:user_id", async function (req, res) {
     res.status(204).end();
 });
 
-/* RESPONSE FORMAT:
+/* 
+REQUEST FORMAT:
+    Method: POST
+    Body: {"user_id": {user_id}}
+    example: {"user_id": "4"}
+
+RESPONSE FORMAT:
     RETURNS: an array of JSON objects which each represent a user. Sorted by highest to lowest score
     example response body:
     [
@@ -193,8 +199,8 @@ app.delete("/users/:user_id", async function (req, res) {
     {name: "Pam", email: "pam@gmail.com", score: 2, questions: {gender: "female", experience: 20, interest: "game development"}},
     ]
 */
-app.get("/:user_id/matches", async function (req, res) {
-    var user_id = req.params.user_id;
+app.post("/matches", async function (req, res) {
+    var user_id = req.body.user_id;
     const matches = await get_matches(user_id);
     res.status(200).json(matches);
 });
