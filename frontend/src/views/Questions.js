@@ -6,10 +6,6 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 export const Questions = () => {
   const { user } = useAuth0();
-  const { qs } = fetch("/questions",
-    {
-        method: 'GET',
-    }).then((response) => response.json())
 
     /*
       Next steps:
@@ -29,7 +25,7 @@ export const Questions = () => {
       const reqOpts = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({user_id: user.user_id, questions: formData.json, type: formData.get("mentor_input")})
+        body: JSON.stringify({user_id: user.email, questions: JSON.stringify(Object.fromEntries(formData)), type: formData.get("mentor_input")})
       };
       fetch('/users', reqOpts)
     }
@@ -58,7 +54,11 @@ export const Questions = () => {
         <br />
         <label>Gender:<input name="gender_input"/></label>
         <br />
-        <label>Gender:<input name="mentor_input"/></label>
+        <label>Mentor:<select name="mentor_input"> 
+          <option value="mentor">Mentor</option>
+          <option value="mentee">Mentee</option>
+          <option value="both">Both</option>
+        </select></label>
         <hr /> <br /> <br />
         <h1>Area of Interest</h1>
         <hr />

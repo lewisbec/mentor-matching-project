@@ -60,13 +60,15 @@ async function get_user(user_id) {
 
 /* UPDATE - add a user's question answers */
 async function add_user_answers(user_id, questions, type) {
-    // find the user that matches the id
-    const user = await get_user(user_id);
-    const key = datastore.key([USERS, parseInt(user.id, 10)]);
 
-    // update that user to have a mentor/mentee type and save their questions
-    user.type = type;
-    user.questions = questions;
+    console.log("Writing to User");
+    console.log(questions);
+    var user = {email: user_id,
+                questions: questions,
+                type: type
+                };
+    const key = datastore.key([USERS, user_id]);
+
 
     // save to datastore
     const updated_user = await datastore.save({ key: key, data: user });
@@ -148,20 +150,25 @@ async function get_matches(user_id) {
         "user_id": Auth0 authentication number? 
     }
 */
+/*
+Disabling this given our users will be created for us by Auth0
+
 app.post("/users", async function (req, res) {
     const user = await add_user(req.body.name, req.body.email, req.body.user_id);
     res.status(201).json(user);
-});
+});*/
 
 app.get("/users/:user_id", async function (req, res) {
     const user = await get_user(req.params.user_id);
     res.status(200).json(user);
 });
 
+/*
+Disabling because it currently isn't used
 app.get("/users", async function (req, res) {
     const users = await get_users();
     res.status(200).json(users);
-});
+});*/
 
 /* REQUEST FORMAT:
     body: {
@@ -170,10 +177,11 @@ app.get("/users", async function (req, res) {
         "type": STRING (mentor/mentee/both)
     }
 */
-app.post("/users/:user_id/questions", async function (req, res) {
-    var user_id = req.params.user_id;
+app.post("/users/", async function (req, res) {
+    var user_id = req.body.user_id;
     var questions = req.body.questions;
     var type = req.body.type;
+    console.log(req.body);
     const user = await add_user_answers(user_id, questions, type);
     res.status(200).json(user);
 });
