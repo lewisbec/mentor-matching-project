@@ -12,9 +12,9 @@ export const ProfileComponent = () => {
     const reqOpts = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({user_id: "asdf"})
+      body: JSON.stringify({user_id: user.user_id})
     };
-    fetch('localhost:8080/get', reqOpts)
+    fetch('/get', reqOpts)
     .then(response => {
       if(response.ok) {
         return response.json();

@@ -26,7 +26,12 @@ export const Questions = () => {
       e.preventDefault();
       const form = e.target;
       const formData = new FormData(form);
-      console.log(Object.fromEntries(formData.entries()));
+      const reqOpts = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user_id: user.user_id, questions: formData.json, type: formData.get("mentor_input")})
+      };
+      fetch('/users', reqOpts)
     }
 
     /*
@@ -52,6 +57,8 @@ export const Questions = () => {
         <label>Name:<input name="name_input"/></label>
         <br />
         <label>Gender:<input name="gender_input"/></label>
+        <br />
+        <label>Gender:<input name="mentor_input"/></label>
         <hr /> <br /> <br />
         <h1>Area of Interest</h1>
         <hr />
