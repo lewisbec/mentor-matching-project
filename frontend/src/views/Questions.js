@@ -27,6 +27,7 @@ export const Questions = () => {
         body: JSON.stringify({user_id: user.email, questions: JSON.stringify(Object.fromEntries(formData)), type: formData.get("mentor_input")})
       };
       fetch('/users', reqOpts)
+      alert("Survey Responses Submitted!\nYou can now use the matching page.");
     }
 
     /*function handleChange(e) {
