@@ -52,7 +52,7 @@ async function get_user(user_id) {
 
     // iterate through all users until finding the matching user_id
     for (let user of users[0]) {
-        if (user.user_id === user_id) {
+        if (user.email === user_id) {
             return user;
         }
     }
@@ -61,8 +61,6 @@ async function get_user(user_id) {
 /* UPDATE - add a user's question answers */
 async function add_user_answers(user_id, questions, type) {
 
-    console.log("Writing to User");
-    console.log(questions);
     var user = {email: user_id,
                 questions: questions,
                 type: type
@@ -109,27 +107,30 @@ async function get_questions(type) {
 async function get_matches(user_id) {
     const user = await get_user(user_id);
     const matches = [];
-
     // get all users of opposite type
     let options = await get_users();
     options = options.filter((potential_user) => potential_user.type !== user.type);
-
+    const user_questions = JSON.parse(user["questions"]);
 
     let optionScore;
     // iterate through questions/answers key value. compare it to the answer that the mentor has: if matching, add 1 to match score
     for (let option of options) {
         // iterate options and calculate score: score+=1 if they have the same answer to questions
         optionScore = 0;
-        for (let question in option.questions) {
-            const optionWords = option.questions[question].split(" ");
-            const userWords = user.questions[question].split(" ");
+        const opt_questions = JSON.parse(option.questions);
+        for (let question in opt_questions) {
+            const optionWords = opt_questions[question].split(" ");
+            const userWords = user_questions[question].split(" ");
             for (let word of optionWords) {
                 if (userWords.includes(word)) {
                     optionScore++;
+                    
                     break;
                 }
             }
         }
+        if(optionScore > 0)
+            matches.push({questions: opt_questions, score: optionScore});
 
     }
 
@@ -181,7 +182,6 @@ app.post("/users/", async function (req, res) {
     var user_id = req.body.user_id;
     var questions = req.body.questions;
     var type = req.body.type;
-    console.log(req.body);
     const user = await add_user_answers(user_id, questions, type);
     res.status(200).json(user);
 });
