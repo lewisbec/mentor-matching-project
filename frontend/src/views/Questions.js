@@ -6,11 +6,6 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 export const Questions = () => {
   const { user } = useAuth0();
-  const { qs } = fetch("/questions",
-    {
-        method: 'GET',
-    }).then((response) => response.json())
-
     /*
       Next steps:
       1. Check if user exists in our database
@@ -26,8 +21,21 @@ export const Questions = () => {
       e.preventDefault();
       const form = e.target;
       const formData = new FormData(form);
-      console.log(Object.fromEntries(formData.entries()));
+      const reqOpts = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user_id: user.email, questions: JSON.stringify(Object.fromEntries(formData)), type: formData.get("mentor_input")})
+      };
+      fetch('/users', reqOpts)
+      alert("Survey Responses Submitted!\nYou can now use the matching page.");
     }
+
+    /*function handleChange(e) {
+      if(e.target.name === "mentor_input"){
+        showMentorQuestions = e.target.value === "mentor"
+        console.log(`Thing updated to ${showMentorQuestions}`)
+      }
+    }*/
 
     /*
     Questions List:
@@ -52,6 +60,11 @@ export const Questions = () => {
         <label>Name:<input name="name_input"/></label>
         <br />
         <label>Gender:<input name="gender_input"/></label>
+        <br />
+        <label>Mentor:<select name="mentor_input"> 
+          <option value="mentor">Mentor</option>
+          <option value="mentee">Mentee</option>
+        </select></label>
         <hr /> <br /> <br />
         <h1>Area of Interest</h1>
         <hr />
@@ -62,7 +75,32 @@ export const Questions = () => {
           <br/>
           <input name="interests_input_3"/>
         </label>
-        <br/>
+        <br/><br/>
+        <label>
+          Experience:
+          <input name="experience_input"/>
+        </label>
+        <br /><br/>
+        <label>
+          Skill Level: 
+          <select name="skill_input"> 
+          <option value="novice">Novice</option>
+          <option value="advanced_beginner">Advanced Beginner</option>
+          <option value="competent">Competent</option>
+          <option value="proficient">Proficient</option>
+          <option value="expert">Expert</option>
+        </select>
+        </label>
+        <br /><hr />
+        <h2> Mentor Only Questions</h2>
+        <p>Are you interested in working with a student team in a senior design project in the near future?</p>
+        <label>Interested?<select name="design_project"> 
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select></label><br /><br/>
+        <label>Professional Association:<input name="association_input"/></label>
+        <br />
+        <label>Contact Method:<input name="contact_method_input"/></label>
         <hr />
         <button type="submit">Submit</button>
       </form>

@@ -21,6 +21,24 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import logo from "../assets/logo.svg";
 
+
+/*
+  External API handling from Auth0 NYI, but will be useful in the future
+              {isAuthenticated && (
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/external-api"
+                    exact
+                    activeClassName="router-link-exact-active"
+                  >
+                    External API
+                  </NavLink>
+                </NavItem>
+              )}
+
+
+*/
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const {
@@ -54,30 +72,7 @@ const NavBar = () => {
                   Home
                 </NavLink>
               </NavItem>
-              {isAuthenticated && (
-                <NavItem>
-                  <NavLink
-                    tag={RouterNavLink}
-                    to="/external-api"
-                    exact
-                    activeClassName="router-link-exact-active"
-                  >
-                    External API
-                  </NavLink>
-                </NavItem>
-              )}
-                <NavItem>
-                  <NavLink
-                    tag={RouterNavLink}
-                    to="/UserList"
-                    exact
-                    activeClassName="router-link-exact-active"
-                  >
-                    User List
-                  </NavLink>
-                </NavItem>
-            </Nav>
-            <Nav className="d-none d-md-block" navbar>
+
               {isAuthenticated && (
                 <NavItem>
                 <NavLink
@@ -87,6 +82,18 @@ const NavBar = () => {
                   activeClassName="router-link-exact-active"
                 >
                   Survey
+                </NavLink>
+              </NavItem>
+              )}
+              {isAuthenticated && (
+                <NavItem>
+                <NavLink
+                  tag={RouterNavLink}
+                  to="/matching"
+                  exact
+                  activeClassName="router-link-exact-active"
+                >
+                  Matching
                 </NavLink>
               </NavItem>
               )}
