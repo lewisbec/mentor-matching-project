@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require('path');
 const app = express();
-
+const Fuse = require('fuse.js');
 
 
 // body parser for the req.body
@@ -61,10 +61,11 @@ async function get_user(user_id) {
 /* UPDATE - add a user's question answers */
 async function add_user_answers(user_id, questions, type) {
 
-    var user = {email: user_id,
-                questions: questions,
-                type: type
-                };
+    var user = {
+        email: user_id,
+        questions: questions,
+        type: type
+    };
     const key = datastore.key([USERS, user_id]);
 
 
@@ -105,38 +106,48 @@ async function get_questions(type) {
 
 /* GET - Get all matches for the specified user */
 async function get_matches(user_id) {
+    // get user
     const user = await get_user(user_id);
-    const matches = [];
+
     // get all users of opposite type
     let options = await get_users();
     options = options.filter((potential_user) => potential_user.type !== user.type);
+    options = options.map(item => JSON.parse(item.questions));
+    options.forEach(option => { option.score = 0 });
+
     const user_questions = JSON.parse(user["questions"]);
 
-    let optionScore;
-    // iterate through questions/answers key value. compare it to the answer that the mentor has: if matching, add 1 to match score
-    for (let option of options) {
-        // iterate options and calculate score: score+=1 if they have the same answer to questions
-        optionScore = 0;
-        const opt_questions = JSON.parse(option.questions);
-        for (let question in opt_questions) {
-            const optionWords = opt_questions[question].split(" ");
-            const userWords = user_questions[question].split(" ");
-            for (let word of optionWords) {
-                if (userWords.includes(word)) {
-                    optionScore++;
-                    
-                    break;
-                }
-            }
+
+    // Set initial fuse search options 
+    let fuseOptions = {
+        shouldSort: true,
+        threshold: 0.3, // can be modified to lower of raise the score matching
+        includeScore: true,
+    };
+
+    let fuse = new Fuse(options, fuseOptions);
+    // for each question in questions list, update the search to only look at that key and with the certain weight desired, then look for the matches, update the scoring array for each one
+    for (let question in user_questions) {
+
+        // only search in the current question being looked at
+        fuseOptions.keys = [question];
+        const fuse = new Fuse(options, fuseOptions)
+        const result = fuse.search(user_questions[question]);
+
+        // update the matched users' score if there was a met and increment their score
+        for (let match of result) {
+            options[match.refIndex].score += match.score;
         }
-        if(optionScore > 0)
-            matches.push({questions: opt_questions, score: optionScore});
+
+        // remove key from search
+        fuseOptions.keys = null;
 
     }
 
-    // return matches sorted by frequency of highest scores array
-    matches.sort((a, b) => b.score - a.score);
-    return matches;
+    // sort results by score
+    options.sort((a, b) => b.score - a.score);
+
+    return options
 
 }
 
