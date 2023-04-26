@@ -147,6 +147,10 @@ async function get_matches(user_id) {
     // sort results by score
     options.sort((a, b) => b.score - a.score);
 
+    // remap the scoring as a percentage match // NEEDS REWORKED
+    maxScore = options[0].score;
+    options.forEach(option => option.score = (option.score / maxScore) * 100)
+
     return options
 
 }
