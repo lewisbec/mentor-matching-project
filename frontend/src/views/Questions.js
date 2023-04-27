@@ -16,9 +16,14 @@ export const Questions = () => {
   */
 
   const [showMentorQuestions, setShowMentorQuestions] = useState(false);
+  const [showDemographicQuestions, setShowDemographicQuestions] = useState(false);
 
   function handleMentorSelect(e) {
     setShowMentorQuestions(e.target.value === "mentor");
+  }
+
+  function handleDemographicSelect(e) {
+    setShowDemographicQuestions(e.target.value == "true");
   }
 
 
@@ -37,19 +42,34 @@ export const Questions = () => {
   }
 
   /*
-  Questions List:
-  Name
-  Gender
-  Racial Identity? (Ask about correct way to word this question)
-  Interests/Area of Expertise
-  Experience (Qualifications)
-  Skill Level (Novice/Advanced Beginner/Competent/Proficient/Expert) - Based on Dreyfus model
-  Additional Information you want to share
+  Categories and questions:
+    1. General Information
+      - Name
+      - Mentor (Checkbox, be a mentor, find a mentor, both?)
+      - Job Title (Can be N/A)
+      - Academic Standing
+      - Participate in Matching?
+      - Would you like demographic information to be used during matching?
+    2. Professional Topics / Technical Topics
+      - Experience - Drop down (Student, Advanced Student, Graduate, Less than 5 years)
+      - Place of employment (If applicable) 
+    3. Mentor Only Questions
+      - Currently interested in working with a student team in a senior design project in the near future?
+      - Preferred Method of Contact
+      - Professional Associations you belong to
+    4. Demographic Information
+      - Gender Identity
+      - Racial Identity (US Census categories)
+        + White Alone
+        + Black or African American Alone
+        + Asian Alone
+        + Native Hawaiian and Other Pacific Islander alone
+        + Hispanic or Latino 
+        + Another Race alone
+        + Two or more Races
+  
+    
 
-  Mentor Only:
-  Currently interested in working with a student team in a senior design project in the near future?
-  Professional Association
-  Preferred Method of Contact
   */
   return (
     <>
@@ -64,8 +84,13 @@ export const Questions = () => {
           <option value="mentee">Mentee</option>
           <option value="mentor">Mentor</option>
         </select></label>
+        <br />
+        <label>Use Demographic Information for matching:
+          <input type="checkbox" name="useDemographic_input" value="true" onChange={handleDemographicSelect}/>
+
+        </label>
         <hr /> <br /> <br />
-        <h1>Area of Interest</h1>
+        <h1>Topics of Discussion</h1>
         <hr />
         <label>
           Interests: <input name="interests_input_1" />
@@ -92,8 +117,8 @@ export const Questions = () => {
         </label>
         <br />
         {showMentorQuestions && (
-
           <div id="mentor_questions_container">
+            <hr />
             <h2> Mentor Only Questions</h2>
             <p>Are you interested in working with a student team in a senior design project in the near future?</p>
             <label>Interested?<select name="design_project">
@@ -103,6 +128,13 @@ export const Questions = () => {
             <label>Professional Association:<input name="association_input" /></label>
             <br />
             <label>Contact Method:<input name="contact_method_input" /></label>
+          </div>
+
+        )}
+        {showDemographicQuestions && (
+          <div id="mentor_questions_container">
+            <hr />
+            <h1>Demographic Information</h1>
           </div>
 
         )}
