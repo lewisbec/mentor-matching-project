@@ -61,8 +61,8 @@ export const Questions = () => {
         <label>Gender:<input name="gender_input" /></label>
         <br />
         <label>Mentor:<select name="mentor_input" onChange={handleMentorSelect}>
-          <option value="mentor">Mentor</option>
           <option value="mentee">Mentee</option>
+          <option value="mentor">Mentor</option>
         </select></label>
         <hr /> <br /> <br />
         <h1>Area of Interest</h1>
@@ -103,7 +103,6 @@ export const Questions = () => {
             <label>Professional Association:<input name="association_input" /></label>
             <br />
             <label>Contact Method:<input name="contact_method_input" /></label>
-
           </div>
 
         )}
