@@ -45,7 +45,7 @@ export const Questions = () => {
   Categories and questions:
     1. General Information
       - Name
-      - Mentor (Checkbox, be a mentor, find a mentor, both?)
+      - Mentor (Checkbox, be a mentor, find a mentor, both?) - "I would like to be a " with checkboxes?
       - Job Title (Can be N/A)
       - Academic Standing
       - Participate in Matching?
@@ -57,6 +57,7 @@ export const Questions = () => {
       - Currently interested in working with a student team in a senior design project in the near future?
       - Preferred Method of Contact
       - Professional Associations you belong to
+      - Top 3 skills/areas of experience you feel confident in helping others with
     4. Demographic Information
       - Gender Identity
       - Racial Identity (US Census categories)
@@ -78,8 +79,6 @@ export const Questions = () => {
         <hr />
         <label>Name:<input name="name_input" /></label>
         <br />
-        <label>Gender:<input name="gender_input" /></label>
-        <br />
         <label>Mentor:<select name="mentor_input" onChange={handleMentorSelect}>
           <option value="mentee">Mentee</option>
           <option value="mentor">Mentor</option>
@@ -93,27 +92,18 @@ export const Questions = () => {
         <h1>Topics of Discussion</h1>
         <hr />
         <label>
-          Interests: <input name="interests_input_1" />
+          Professional Topics: <input name="interests_input_1" />
           <br />
           <input name="interests_input_2" />
           <br />
           <input name="interests_input_3" />
         </label>
-        <br /><br />
         <label>
-          Experience:
-          <input name="experience_input" />
-        </label>
-        <br /><br />
-        <label>
-          Skill Level:
-          <select name="skill_input">
-            <option value="novice">Novice</option>
-            <option value="advanced_beginner">Advanced Beginner</option>
-            <option value="competent">Competent</option>
-            <option value="proficient">Proficient</option>
-            <option value="expert">Expert</option>
-          </select>
+          Technical Topics: <input name="technical_input_1" />
+          <br />
+          <input name="technical_input_2" />
+          <br />
+          <input name="technical_input_3" />
         </label>
         <br />
         {showMentorQuestions && (
@@ -121,10 +111,20 @@ export const Questions = () => {
             <hr />
             <h2> Mentor Only Questions</h2>
             <p>Are you interested in working with a student team in a senior design project in the near future?</p>
-            <label>Interested?<select name="design_project">
+            <label><select name="design_project">
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select></label><br /><br />
+            <label>
+            Top 3 areas of expertise you would feel confident in helping others with:
+            < br />
+            <input name="expertise_input_1"/>
+            < br />
+            <input name="expertise_input_2"/>
+            < br />
+            <input name="expertise_input_3"/>
+            </label>
+            <br />
             <label>Professional Association:<input name="association_input" /></label>
             <br />
             <label>Contact Method:<input name="contact_method_input" /></label>
@@ -135,6 +135,24 @@ export const Questions = () => {
           <div id="mentor_questions_container">
             <hr />
             <h1>Demographic Information</h1>
+            <label>
+              Gender Identity: <input name="gender_input" />
+            </label>
+            <br />
+            <label>
+              Racial Identity: 
+              <select name="race_input">
+                <option value="asian">Asian</option>
+                <option value="black">Black or African American</option>
+                <option value="hispanic">Hispanic or Latino</option>
+                <option value="hawaiian">Native Hawaiian and Other Pacific Islander</option>
+                <option value="white">White</option>
+                <option value="other">Other</option>
+                <option value="NA">Prefer not to Answer</option>
+              </select>
+            </label>
+            <br />
+
           </div>
 
         )}
