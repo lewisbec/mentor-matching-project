@@ -23,7 +23,7 @@ export const Questions = () => {
   }
 
   function handleDemographicSelect(e) {
-    setShowDemographicQuestions(e.target.value == "true");
+    setShowDemographicQuestions(e.target.checked === true);
   }
 
 
@@ -83,9 +83,15 @@ export const Questions = () => {
           <option value="mentee">Mentee</option>
           <option value="mentor">Mentor</option>
         </select></label>
-        <br />
+        <br /><br />
+        <label>
+          Participate in Matching? <input type="checkbox" value="matching"/>
+        </label>
+        <br /> <br />
+        For matching purposes, demographic information may help us match you with someone who has also provided demographic information and is looking for a mentor/mentee who shares their identie(s).
+        <br /> <br />
         <label>Use Demographic Information for matching:
-          <input type="checkbox" name="useDemographic_input" value="true" onChange={handleDemographicSelect}/>
+          <input type="checkbox" name="useDemographic_input" value="true" onClick={handleDemographicSelect}/>
 
         </label>
         <hr /> <br /> <br />
@@ -104,6 +110,10 @@ export const Questions = () => {
           <input name="technical_input_2" />
           <br />
           <input name="technical_input_3" />
+        </label>
+        <br />
+        <label>
+          Place of Employment (If applicable) <input name="employment_input" />
         </label>
         <br />
         {showMentorQuestions && (
