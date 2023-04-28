@@ -19,7 +19,7 @@ export const Questions = () => {
   const [showDemographicQuestions, setShowDemographicQuestions] = useState(false);
 
   function handleMentorSelect(e) {
-    setShowMentorQuestions(e.target.value === "mentor");
+    setShowMentorQuestions(e.target.value === "mentor" || e.target.value === "both");
   }
 
   function handleDemographicSelect(e) {
@@ -82,6 +82,7 @@ export const Questions = () => {
         <label>Mentor:<select name="mentor_input" onChange={handleMentorSelect}>
           <option value="mentee">Mentee</option>
           <option value="mentor">Mentor</option>
+          <option value="both">Both</option>
         </select></label>
         <br /><br />
         <label>
