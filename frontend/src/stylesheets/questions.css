@@ -1,14 +1,28 @@
 label{
     display: inline-block;
-    width: 33%;
+    width: 55%;
 }
 
 input{
-    width: 70%;
+    width: 100%;
     float: right;
 }
 
+label [name=mentor_label] { 
+    display: inline-block;
+    width: 10%;
+}
+
+input[type=checkbox] {
+    width:5%;
+    float: left;
+}
+
 select{
-    width: 70%;
+    width: 100%;
     float: right;
+}
+
+body{
+    background-color: rgb(231, 231, 231);
 }

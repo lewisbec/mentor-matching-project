@@ -58,22 +58,34 @@ export const Questions = () => {
         <hr />
         <label>Name:<input name="name_input" /></label>
         <br />
-        <label>Gender:<input name="gender_input" /></label>
+        <label>Year in school (if applicable):<input grade="grade_input" /></label>
         <br />
+        <label>Select one:</label>
+        <br/>
+        <input type="checkbox" id="mentor" name="mentor_input" value="mentor"/>
+        <label for="mentor">Mentor</label>
+        <br/>
+        <input type="checkbox" id="mentee" name="mentor_input" value="mentee" />
+        <label for="mentee">Mentee</label>
+        <br/>
         <label>Mentor:<select name="mentor_input" onChange={handleMentorSelect}>
+          <option value=""></option>
           <option value="mentee">Mentee</option>
           <option value="mentor">Mentor</option>
         </select></label>
         <hr /> <br /> <br />
         <h1>Area of Interest</h1>
         <hr />
-        <label>
-          Interests: <input name="interests_input_1" />
-          <br />
-          <input name="interests_input_2" />
-          <br />
-          <input name="interests_input_3" />
+        <label> Technical Interests: 
+          <input name="tech_interests_input_1" />
+          <input name="tech_interests_input_2" />
+          <input name="tech_interests_input_3" />
         </label>
+        <br />
+        <label> Professional Interests: 
+          <input name="prof_interests_input_1" />
+          <input name="prof_interests_input_2" />
+          <input name="prof_interests_input_3" />  </label>
         <br /><br />
         <label>
           Experience:
@@ -83,6 +95,7 @@ export const Questions = () => {
         <label>
           Skill Level:
           <select name="skill_input">
+            <option value="blank"></option>
             <option value="novice">Novice</option>
             <option value="advanced_beginner">Advanced Beginner</option>
             <option value="competent">Competent</option>
@@ -90,17 +103,38 @@ export const Questions = () => {
             <option value="expert">Expert</option>
           </select>
         </label>
+        <hr /> <br /> <br />
+        <h1>Optional Demographics</h1>
+        <hr />
+        <label>
+          Race:
+          <select name="race_input">
+            <option value="blank"></option>
+            <option value="white">White</option>
+            <option value="africanAmerican">Black or African American</option>
+            <option value="asian">Asian</option>
+            <option value="americanIndian">American Indian and Alaska Native</option>
+            <option value="hawaiian">Native Hawaiian and Other Pacific Islander</option>
+            <option value="other">Other</option>
+            <option value="none">Prefer not to say</option>
+          </select>
+        </label>
         <br />
+        <label> Gender: <input name="gender_input" /></label>
+        <hr /><br />
+        
         {showMentorQuestions && (
 
           <div id="mentor_questions_container">
             <h2> Mentor Only Questions</h2>
-            <p>Are you interested in working with a student team in a senior design project in the near future?</p>
-            <label>Interested?<select name="design_project">
+            <label>Are you interested in working with a student team in a senior design project in the near future?<select name="design_project">
+              <option value="blank"></option>
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select></label><br /><br />
-            <label>Professional Association:<input name="association_input" /></label>
+            <label>Place of Employment (if applicable):<input name="employemnt_input" /></label>
+            <br />
+            <label>Other Professional Associations:<input name="association_input" /></label>
             <br />
             <label>Contact Method:<input name="contact_method_input" /></label>
           </div>

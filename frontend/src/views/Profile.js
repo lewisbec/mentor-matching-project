@@ -44,6 +44,19 @@ export const ProfileComponent = () => {
           <p className="lead text-muted">{user.email}</p>
         </Col>
       </Row>
+      <Row className="align-items-top mb-5 text-top text-md-left">
+        <Col md={4}>
+          <label>Name</label>
+          <label>Email</label>
+          <label>Email Verified?</label>
+        </Col>
+        <Col md>
+          <label> {user.nickname}</label>
+          <label> {user.email}</label>
+          <label> {user.email_verified} </label>
+        </Col>
+      </Row>
+      
       <Row>
         <Highlight>{JSON.stringify(user, null, 2)}</Highlight>
       </Row>

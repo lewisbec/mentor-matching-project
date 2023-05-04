@@ -31,12 +31,13 @@ export const MatchesComponent = () => {
   
   return (
     <Container className="mb-5">
+      <h2>Matches</h2>
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
         <Col md={2}>
-          Matches
+          <h1>1</h1> 
         </Col>
         <Col md>
-          <h2>{user.name}</h2>
+          <h2>{user.nickname}</h2>
           <p className="lead text-muted">{user.email}</p>
         </Col>
       </Row>
