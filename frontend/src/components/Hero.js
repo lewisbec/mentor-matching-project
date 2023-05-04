@@ -24,11 +24,10 @@ const Hero = () => {
   return (
     <div className="text-center hero my-5">
       <img className="mb-3 app-logo" src={logo} alt="React logo" width="120" />
-      <h1 className="mb-4">Mentor Matching Website</h1>
+      <h1 className="mb-4">ECE Mentor Matching</h1>
       <p className="lead">
-        Test landing page for the Mentor Matching Website.
+        Welcome to Mentor Matching
       </p>
-      <h2>Backend Connection Test</h2>
       <p>
         {serverData}
       </p>
