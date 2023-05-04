@@ -33,9 +33,14 @@ export const MatchesComponent = () => {
 
   return (
     <Container className="mb-5">
+      <h2>Matches</h2>
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
-        <Col>
-          <h1>Your Matches</h1>
+        <Col md={2}>
+          <h1>1</h1> 
+        </Col>
+        <Col md>
+          <h2>{user.nickname}</h2>
+          <p className="lead text-muted">{user.email}</p>
         </Col>
       </Row>
       {serverData.map((data) => (

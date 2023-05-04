@@ -80,6 +80,7 @@ export const Questions = () => {
         <label>Name:<input name="name_input" /></label>
         <br />
         <label>Mentor:<select name="mentor_input" onChange={handleMentorSelect}>
+          <option value=""></option>
           <option value="mentee">Mentee</option>
           <option value="mentor">Mentor</option>
           <option value="both">Both</option>
@@ -98,25 +99,32 @@ export const Questions = () => {
         <hr /> <br /> <br />
         <h1>Topics of Discussion</h1>
         <hr />
-        <label>
-          Professional Topics: <input name="interests_input_1" />
-          <br />
-          <input name="interests_input_2" />
-          <br />
-          <input name="interests_input_3" />
-        </label>
-        <label>
-          Technical Topics: <input name="technical_input_1" />
-          <br />
-          <input name="technical_input_2" />
-          <br />
-          <input name="technical_input_3" />
+        <label> Technical Interests: 
+          <input name="tech_interests_input_1" />
+          <input name="tech_interests_input_2" />
+          <input name="tech_interests_input_3" />
         </label>
         <br />
+        <label> Professional Interests: 
+          <input name="prof_interests_input_1" />
+          <input name="prof_interests_input_2" />
+          <input name="prof_interests_input_3" />  </label>
+        <br /><br />
+        <br />
         <label>
+          Skill Level:
+          <select name="skill_input">
+            <option value="blank"></option>
+            <option value="novice">Novice</option>
+            <option value="advanced_beginner">Advanced Beginner</option>
+            <option value="competent">Competent</option>
+            <option value="proficient">Proficient</option>
+            <option value="expert">Expert</option>
+          </select>
           Place of Employment (If applicable) <input name="employment_input" />
         </label>
-        <br />
+        <hr /> <br /> <br />
+        
         {showMentorQuestions && (
           <div id="mentor_questions_container">
             <hr />
