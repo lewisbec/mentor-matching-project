@@ -16,9 +16,14 @@ export const Questions = () => {
   */
 
   const [showMentorQuestions, setShowMentorQuestions] = useState(false);
+  const [showDemographicQuestions, setShowDemographicQuestions] = useState(false);
 
   function handleMentorSelect(e) {
-    setShowMentorQuestions(e.target.value === "mentor");
+    setShowMentorQuestions(e.target.value === "mentor" || e.target.value === "both");
+  }
+
+  function handleDemographicSelect(e) {
+    setShowDemographicQuestions(e.target.checked === true);
   }
 
 
@@ -37,19 +42,35 @@ export const Questions = () => {
   }
 
   /*
-  Questions List:
-  Name
-  Gender
-  Racial Identity? (Ask about correct way to word this question)
-  Interests/Area of Expertise
-  Experience (Qualifications)
-  Skill Level (Novice/Advanced Beginner/Competent/Proficient/Expert) - Based on Dreyfus model
-  Additional Information you want to share
+  Categories and questions:
+    1. General Information
+      - Name
+      - Mentor (Checkbox, be a mentor, find a mentor, both?) - "I would like to be a " with checkboxes?
+      - Job Title (Can be N/A)
+      - Academic Standing
+      - Participate in Matching?
+      - Would you like demographic information to be used during matching?
+    2. Professional Topics / Technical Topics
+      - Experience - Drop down (Student, Advanced Student, Graduate, Less than 5 years)
+      - Place of employment (If applicable) 
+    3. Mentor Only Questions
+      - Currently interested in working with a student team in a senior design project in the near future?
+      - Preferred Method of Contact
+      - Professional Associations you belong to
+      - Top 3 skills/areas of experience you feel confident in helping others with
+    4. Demographic Information
+      - Gender Identity
+      - Racial Identity (US Census categories)
+        + White Alone
+        + Black or African American Alone
+        + Asian Alone
+        + Native Hawaiian and Other Pacific Islander alone
+        + Hispanic or Latino 
+        + Another Race alone
+        + Two or more Races
+  
+    
 
-  Mentor Only:
-  Currently interested in working with a student team in a senior design project in the near future?
-  Professional Association
-  Preferred Method of Contact
   */
   return (
     <>
@@ -58,23 +79,25 @@ export const Questions = () => {
         <hr />
         <label>Name:<input name="name_input" /></label>
         <br />
-        <label>Year in school (if applicable):<input grade="grade_input" /></label>
-        <br />
-        <label>Select one:</label>
-        <br/>
-        <input type="checkbox" id="mentor" name="mentor_input" value="mentor"/>
-        <label for="mentor">Mentor</label>
-        <br/>
-        <input type="checkbox" id="mentee" name="mentor_input" value="mentee" />
-        <label for="mentee">Mentee</label>
-        <br/>
         <label>Mentor:<select name="mentor_input" onChange={handleMentorSelect}>
           <option value=""></option>
           <option value="mentee">Mentee</option>
           <option value="mentor">Mentor</option>
+          <option value="both">Both</option>
         </select></label>
+        <br /><br />
+        <label>
+          Participate in Matching? <input type="checkbox" value="matching"/>
+        </label>
+        <br /> <br />
+        For matching purposes, demographic information may help us match you with someone who has also provided demographic information and is looking for a mentor/mentee who shares their identie(s).
+        <br /> <br />
+        <label>Use Demographic Information for matching:
+          <input type="checkbox" name="useDemographic_input" value="true" onClick={handleDemographicSelect}/>
+
+        </label>
         <hr /> <br /> <br />
-        <h1>Area of Interest</h1>
+        <h1>Topics of Discussion</h1>
         <hr />
         <label> Technical Interests: 
           <input name="tech_interests_input_1" />
@@ -87,11 +110,7 @@ export const Questions = () => {
           <input name="prof_interests_input_2" />
           <input name="prof_interests_input_3" />  </label>
         <br /><br />
-        <label>
-          Experience:
-          <input name="experience_input" />
-        </label>
-        <br /><br />
+        <br />
         <label>
           Skill Level:
           <select name="skill_input">
@@ -102,41 +121,57 @@ export const Questions = () => {
             <option value="proficient">Proficient</option>
             <option value="expert">Expert</option>
           </select>
+          Place of Employment (If applicable) <input name="employment_input" />
         </label>
         <hr /> <br /> <br />
-        <h1>Optional Demographics</h1>
-        <hr />
-        <label>
-          Race:
-          <select name="race_input">
-            <option value="blank"></option>
-            <option value="white">White</option>
-            <option value="africanAmerican">Black or African American</option>
-            <option value="asian">Asian</option>
-            <option value="americanIndian">American Indian and Alaska Native</option>
-            <option value="hawaiian">Native Hawaiian and Other Pacific Islander</option>
-            <option value="other">Other</option>
-            <option value="none">Prefer not to say</option>
-          </select>
-        </label>
-        <br />
-        <label> Gender: <input name="gender_input" /></label>
-        <hr /><br />
         
         {showMentorQuestions && (
-
           <div id="mentor_questions_container">
+            <hr />
             <h2> Mentor Only Questions</h2>
-            <label>Are you interested in working with a student team in a senior design project in the near future?<select name="design_project">
-              <option value="blank"></option>
+            <p>Are you interested in working with a student team in a senior design project in the near future?</p>
+            <label><select name="design_project">
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select></label><br /><br />
-            <label>Place of Employment (if applicable):<input name="employemnt_input" /></label>
+            <label>
+            Top 3 areas of expertise you would feel confident in helping others with:
+            < br />
+            <input name="expertise_input_1"/>
+            < br />
+            <input name="expertise_input_2"/>
+            < br />
+            <input name="expertise_input_3"/>
+            </label>
             <br />
-            <label>Other Professional Associations:<input name="association_input" /></label>
+            <label>Professional Association:<input name="association_input" /></label>
             <br />
             <label>Contact Method:<input name="contact_method_input" /></label>
+          </div>
+
+        )}
+        {showDemographicQuestions && (
+          <div id="mentor_questions_container">
+            <hr />
+            <h1>Demographic Information</h1>
+            <label>
+              Gender Identity: <input name="gender_input" />
+            </label>
+            <br />
+            <label>
+              Racial Identity: 
+              <select name="race_input">
+                <option value="asian">Asian</option>
+                <option value="black">Black or African American</option>
+                <option value="hispanic">Hispanic or Latino</option>
+                <option value="hawaiian">Native Hawaiian and Other Pacific Islander</option>
+                <option value="white">White</option>
+                <option value="other">Other</option>
+                <option value="NA">Prefer not to Answer</option>
+              </select>
+            </label>
+            <br />
+
           </div>
 
         )}
