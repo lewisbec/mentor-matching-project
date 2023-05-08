@@ -36,7 +36,7 @@ export const MatchesComponent = () => {
       <h2>Matches</h2>
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
         <Col md={2}>
-          <h1>1</h1> 
+          <h1>{serverData.length}</h1>
         </Col>
         <Col md>
           <h2>{user.nickname}</h2>

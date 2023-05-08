@@ -6,6 +6,7 @@ const User = ({ data }) => {
             <h2>{data.name_input}</h2>
             <p>Interests: {data.interests_input_1}, {data.interests_input_2}, {data.interests_input_3}</p>
             <p>Match Score: {data.score}</p>
+            <p>Contact: {data.contact_method_input}</p>
         </div>
     )
 }
