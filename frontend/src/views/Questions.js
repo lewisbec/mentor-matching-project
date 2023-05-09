@@ -113,16 +113,25 @@ export const Questions = () => {
         <hr /> <br /> <br />
         <h1>Topics of Discussion</h1>
         <hr />
+        <label>
+          <em>Use the slider to specify how important a topic is to you.</em>
+        </label>
         <label> Technical Interests:
           <input name="interests_input_1" defaultValue={userData.interests_input_1} />
+          <input type="range" name="interests_input_1_rank" min="1" max="5" defaultValue="3" />
           <input name="interests_input_2" defaultValue={userData.interests_input_2} />
+          <input type="range" name="interests_input_2_rank" min="1" max="5" defaultValue="3" />
           <input name="interests_input_3" defaultValue={userData.interests_input_3} />
+          <input type="range" name="interests_input_3_rank" min="1" max="5" defaultValue="3" />
         </label>
         <br />
         <label> Professional Interests:
           <input name="prof_interests_input_1" defaultValue={userData.prof_interests_input_1} />
+          <input type="range" name="prof_interests_input_1_rank" min="1" max="5" defaultValue="3" />
           <input name="prof_interests_input_2" defaultValue={userData.prof_interests_input_2} />
+          <input type="range" name="prof_interests_input_2_rank" min="1" max="5" defaultValue="3" />
           <input name="prof_interests_input_3" defaultValue={userData.prof_interests_input_3} />
+          <input type="range" name="prof_interests_input_3_rank" min="1" max="5" defaultValue="3" />
         </label>
         <br /><br />
         <br />
@@ -136,8 +145,12 @@ export const Questions = () => {
             <option value="proficient">Proficient</option>
             <option value="expert">Expert</option>
           </select>
-          Place of Employment (If applicable) <input name="employment_input" defaultValue={userData.employment_input} />
         </label>
+        <label>
+          Place of Employment (If applicable)
+          <input name="employment_input" defaultValue={userData.employment_input} />
+        </label>
+
         <hr /> <br /> <br />
 
         {showMentorQuestions && (
