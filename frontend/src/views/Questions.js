@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../stylesheets/questions.css";
 import Loading from "../components/Loading";
 
@@ -17,6 +17,7 @@ export const Questions = () => {
 
   const [showMentorQuestions, setShowMentorQuestions] = useState(false);
   const [showDemographicQuestions, setShowDemographicQuestions] = useState(false);
+  const [userData, setUserData] = useState({});
 
   function handleMentorSelect(e) {
     setShowMentorQuestions(e.target.value === "mentor" || e.target.value === "both");
@@ -26,6 +27,19 @@ export const Questions = () => {
     setShowDemographicQuestions(e.target.checked === true);
   }
 
+  useEffect(() => {
+    async function fetchUserData() {
+      const reqOpts = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      };
+      const res = await fetch('/users/beckett.junkmail387@gmail.com', reqOpts);
+      let data = await res.json();
+      data = await JSON.parse(data.questions);
+      setUserData(data);
+    }
+    fetchUserData();
+  }, [])
 
   // From https://beta.reactjs.org/reference/react-dom/components/input#displaying-inputs-of-different-types
   function handleSubmit(e) {
@@ -77,7 +91,7 @@ export const Questions = () => {
       <form method="post" onSubmit={handleSubmit}>
         <h1>General Information</h1>
         <hr />
-        <label>Name:<input name="name_input" /></label>
+        <label>Name:<input name="name_input" defaultValue={userData.name_input} /></label>
         <br />
         <label>Mentor:<select name="mentor_input" onChange={handleMentorSelect}>
           <option value=""></option>
@@ -87,28 +101,38 @@ export const Questions = () => {
         </select></label>
         <br /><br />
         <label>
-          Participate in Matching? <input type="checkbox" value="matching"/>
+          Participate in Matching? <input type="checkbox" value="matching" />
         </label>
         <br /> <br />
         For matching purposes, demographic information may help us match you with someone who has also provided demographic information and is looking for a mentor/mentee who shares their identie(s).
         <br /> <br />
         <label>Use Demographic Information for matching:
-          <input type="checkbox" name="useDemographic_input" value="true" onClick={handleDemographicSelect}/>
+          <input type="checkbox" name="useDemographic_input" value="true" onClick={handleDemographicSelect} />
 
         </label>
         <hr /> <br /> <br />
         <h1>Topics of Discussion</h1>
         <hr />
-        <label> Technical Interests: 
-          <input name="tech_interests_input_1" />
-          <input name="tech_interests_input_2" />
-          <input name="tech_interests_input_3" />
+        <label>
+          <em>Use the slider to specify how important a topic is to you.</em>
+        </label>
+        <label> Technical Interests:
+          <input name="interests_input_1" defaultValue={userData.interests_input_1} />
+          <input type="range" name="interests_input_1_rank" min="1" max="5" defaultValue="3" />
+          <input name="interests_input_2" defaultValue={userData.interests_input_2} />
+          <input type="range" name="interests_input_2_rank" min="1" max="5" defaultValue="3" />
+          <input name="interests_input_3" defaultValue={userData.interests_input_3} />
+          <input type="range" name="interests_input_3_rank" min="1" max="5" defaultValue="3" />
         </label>
         <br />
-        <label> Professional Interests: 
-          <input name="prof_interests_input_1" />
-          <input name="prof_interests_input_2" />
-          <input name="prof_interests_input_3" />  </label>
+        <label> Professional Interests:
+          <input name="prof_interests_input_1" defaultValue={userData.prof_interests_input_1} />
+          <input type="range" name="prof_interests_input_1_rank" min="1" max="5" defaultValue="3" />
+          <input name="prof_interests_input_2" defaultValue={userData.prof_interests_input_2} />
+          <input type="range" name="prof_interests_input_2_rank" min="1" max="5" defaultValue="3" />
+          <input name="prof_interests_input_3" defaultValue={userData.prof_interests_input_3} />
+          <input type="range" name="prof_interests_input_3_rank" min="1" max="5" defaultValue="3" />
+        </label>
         <br /><br />
         <br />
         <label>
@@ -121,10 +145,14 @@ export const Questions = () => {
             <option value="proficient">Proficient</option>
             <option value="expert">Expert</option>
           </select>
-          Place of Employment (If applicable) <input name="employment_input" />
         </label>
+        <label>
+          Place of Employment (If applicable)
+          <input name="employment_input" defaultValue={userData.employment_input} />
+        </label>
+
         <hr /> <br /> <br />
-        
+
         {showMentorQuestions && (
           <div id="mentor_questions_container">
             <hr />
@@ -135,18 +163,18 @@ export const Questions = () => {
               <option value="no">No</option>
             </select></label><br /><br />
             <label>
-            Top 3 areas of expertise you would feel confident in helping others with:
-            < br />
-            <input name="expertise_input_1"/>
-            < br />
-            <input name="expertise_input_2"/>
-            < br />
-            <input name="expertise_input_3"/>
+              Top 3 areas of expertise you would feel confident in helping others with:
+              < br />
+              <input name="expertise_input_1" defaultValue={userData.expertise_input_1} />
+              < br />
+              <input name="expertise_input_2" defaultValue={userData.expertise_input_2} />
+              < br />
+              <input name="expertise_input_3" defaultValue={userData.expertise_input_3} />
             </label>
             <br />
-            <label>Professional Association:<input name="association_input" /></label>
+            <label>Professional Association:<input name="association_input" defaultValue={userData.association_input} /></label>
             <br />
-            <label>Contact Method:<input name="contact_method_input" /></label>
+            <label>Contact Method:<input name="contact_method_input" defaultValue={userData.contact_method_input} /></label>
           </div>
 
         )}
@@ -159,7 +187,7 @@ export const Questions = () => {
             </label>
             <br />
             <label>
-              Racial Identity: 
+              Racial Identity:
               <select name="race_input">
                 <option value="asian">Asian</option>
                 <option value="black">Black or African American</option>

@@ -28,9 +28,6 @@ const Hero = () => {
       <p className="lead">
         Welcome to Mentor Matching
       </p>
-      <p>
-        {serverData}
-      </p>
     </div>
   );
 }

@@ -113,7 +113,7 @@ async function get_matches(user_id) {
     let options = await get_users();
     options = options.filter((potential_user) => potential_user.type !== user.type);
     options = options.map(item => JSON.parse(item.questions));
-    options.forEach(option => { option.score = 0 });
+    options.forEach(option => { option.score = 0 });    
 
     const user_questions = JSON.parse(user["questions"]);
 
@@ -133,10 +133,9 @@ async function get_matches(user_id) {
         fuseOptions.keys = [question];
         const fuse = new Fuse(options, fuseOptions)
         const result = fuse.search(user_questions[question]);
-
         // update the matched users' score if there was a met and increment their score
         for (let match of result) {
-            options[match.refIndex].score += match.score;
+            options[match.refIndex].score += match.score; // * question.weight; // once frontend is updated for weighting, multiply by the weight of the question
         }
 
         // remove key from search
@@ -150,6 +149,10 @@ async function get_matches(user_id) {
     // remap the scoring as a percentage match // NEEDS REWORKED
     maxScore = options[0].score;
     options.forEach(option => option.score = (option.score / maxScore) * 100)
+
+    // filter for score has to reach a certain threshold
+    const MATCH_THRESHOLD = 0;
+    options = options.filter(match => match.score >= MATCH_THRESHOLD);
 
     return options
 
