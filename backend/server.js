@@ -111,9 +111,14 @@ async function get_matches(user_id) {
 
     // get all users of opposite type
     let options = await get_users();
-    options = options.filter((potential_user) => potential_user.type !== user.type);
+    if (user.type !== "both") {
+        options = options.filter((potential_user) => potential_user.type !== user.type);
+    } else {
+        // only have to remove the user itself
+        options = options.filter((potential_user) => potential_user.email !== user.email);
+    }
     options = options.map(item => JSON.parse(item.questions));
-    options.forEach(option => { option.score = 0 });    
+    options.forEach(option => { option.score = 0 });
 
     const user_questions = JSON.parse(user["questions"]);
 
@@ -128,13 +133,27 @@ async function get_matches(user_id) {
     // for each question in questions list, update the search to only look at that key and with the certain weight desired, then look for the matches, update the scoring array for each one
     for (let question in user_questions) {
 
-        // only search in the current question being looked at
-        fuseOptions.keys = [question];
-        const fuse = new Fuse(options, fuseOptions)
+        // search in the questions being looked at
+        if (question.startsWith("interests_input")) {
+            fuseOptions.keys = ["interests_input_1", "interests_input_2", "interests_input_3"];
+        } else if (question.startsWith("prof_interests_input")) {
+            fuseOptions.keys = ["prof_interests_input_1", "prof_interests_input_2", "prof_interests_input_3"];
+        } else {
+            fuseOptions.keys = [question];
+        }
+
+        const fuse = new Fuse(options, fuseOptions);
         const result = fuse.search(user_questions[question]);
         // update the matched users' score if there was a met and increment their score
+        let string = question.concat("_rank")
+        let weight = parseInt(user_questions[string]);
         for (let match of result) {
-            options[match.refIndex].score += match.score; // * question.weight; // once frontend is updated for weighting, multiply by the weight of the question
+            // find weighting from user
+            if (weight) {
+                options[match.refIndex].score += weight;
+            } else {
+                options[match.refIndex].score++;
+            }
         }
 
         // remove key from search
