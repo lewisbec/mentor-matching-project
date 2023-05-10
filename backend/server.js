@@ -132,7 +132,9 @@ async function get_matches(user_id) {
 
     // for each question in questions list, update the search to only look at that key and with the certain weight desired, then look for the matches, update the scoring array for each one
     for (let question in user_questions) {
-
+        if (!question.includes("interests")) {
+            continue;
+        }
         // search in the questions being looked at
         if (question.startsWith("interests_input")) {
             fuseOptions.keys = ["interests_input_1", "interests_input_2", "interests_input_3"];
