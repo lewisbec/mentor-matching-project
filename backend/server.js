@@ -111,9 +111,14 @@ async function get_matches(user_id) {
 
     // get all users of opposite type
     let options = await get_users();
-    options = options.filter((potential_user) => potential_user.type !== user.type);
+    if (user.type !== "both") {
+        options = options.filter((potential_user) => potential_user.type !== user.type);
+    } else {
+        // only have to remove the user itself
+        options = options.filter((potential_user) => potential_user.email !== user.email);
+    }
     options = options.map(item => JSON.parse(item.questions));
-    options.forEach(option => { option.score = 0 });    
+    options.forEach(option => { option.score = 0 });
 
     const user_questions = JSON.parse(user["questions"]);
 
@@ -125,17 +130,32 @@ async function get_matches(user_id) {
         includeScore: true,
     };
 
-    let fuse = new Fuse(options, fuseOptions);
     // for each question in questions list, update the search to only look at that key and with the certain weight desired, then look for the matches, update the scoring array for each one
     for (let question in user_questions) {
+        if (!question.includes("interests")) {
+            continue;
+        }
+        // search in the questions being looked at
+        if (question.startsWith("interests_input")) {
+            fuseOptions.keys = ["interests_input_1", "interests_input_2", "interests_input_3"];
+        } else if (question.startsWith("prof_interests_input")) {
+            fuseOptions.keys = ["prof_interests_input_1", "prof_interests_input_2", "prof_interests_input_3"];
+        } else {
+            fuseOptions.keys = [question];
+        }
 
-        // only search in the current question being looked at
-        fuseOptions.keys = [question];
-        const fuse = new Fuse(options, fuseOptions)
+        const fuse = new Fuse(options, fuseOptions);
         const result = fuse.search(user_questions[question]);
         // update the matched users' score if there was a met and increment their score
+        let string = question.concat("_rank")
+        let weight = parseInt(user_questions[string]);
         for (let match of result) {
-            options[match.refIndex].score += match.score; // * question.weight; // once frontend is updated for weighting, multiply by the weight of the question
+            // find weighting from user
+            if (weight) {
+                options[match.refIndex].score += weight;
+            } else {
+                options[match.refIndex].score++;
+            }
         }
 
         // remove key from search
@@ -162,32 +182,10 @@ async function get_matches(user_id) {
 
 /* ------------- Begin USERS Routes --------------- */
 
-/* REQUEST FORMAT:
-    body: {
-        "name": 'STRING',
-        "email": 'STRING',
-        "user_id": Auth0 authentication number? 
-    }
-*/
-/*
-Disabling this given our users will be created for us by Auth0
-
-app.post("/users", async function (req, res) {
-    const user = await add_user(req.body.name, req.body.email, req.body.user_id);
-    res.status(201).json(user);
-});*/
-
 app.get("/users/:user_id", async function (req, res) {
     const user = await get_user(req.params.user_id);
     res.status(200).json(user);
 });
-
-/*
-Disabling because it currently isn't used
-app.get("/users", async function (req, res) {
-    const users = await get_users();
-    res.status(200).json(users);
-});*/
 
 /* REQUEST FORMAT:
     body: {
@@ -204,13 +202,6 @@ app.post("/users/", async function (req, res) {
     res.status(200).json(user);
 });
 
-/*
-app.delete("/users/:user_id", async function (req, res) {
-    var user_id = req.params.user_id;
-    await delete_user(user_id);
-    res.status(204).end();
-});
-*/
 
 /* 
 REQUEST FORMAT:
@@ -239,22 +230,6 @@ app.post("/matches", async function (req, res) {
 
 /* ------------- Begin QUESTION Routes --------------- */
 
-/* REQUEST FORMAT:
-    body: {
-        "type": STRING (mentor/mentee/both),
-        "question": STRING,
-        "options": [STRING, STRING, STRING, (ctn...)]
-    }
-*/
-/*
-app.post("/questions", async function (req, res) {
-    const type = req.body.type;
-    const question = req.body.question;
-    const options = req.body.options;
-    const response = await add_questions(type, question, options)
-    res.status(201).json(response);
-});
-*/
 
 app.get("/questions/:type", async function (req, res) {
     const type = req.params.type;
