@@ -184,6 +184,7 @@ export const Questions = () => {
             <h1>Demographic Information</h1>
             <label>
               Gender Identity: <input name="gender_input" />
+              <input type="range" name="gender_input_rank" min="1" max="5" defaultValue="3" />
             </label>
             <br />
             <label>
@@ -197,6 +198,7 @@ export const Questions = () => {
                 <option value="other">Other</option>
                 <option value="NA">Prefer not to Answer</option>
               </select>
+              <input type="range" name="race_input_rank" min="1" max="5" defaultValue="3" />
             </label>
             <br />
 
