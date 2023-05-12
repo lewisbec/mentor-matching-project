@@ -33,7 +33,7 @@ export const Questions = () => {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       };
-      const res = await fetch('/users/beckett.junkmail387@gmail.com', reqOpts);
+      const res = await fetch(`/users/${user.email}`, reqOpts);
       let data = await res.json();
       data = await JSON.parse(data.questions);
       setUserData(data);
@@ -136,14 +136,14 @@ export const Questions = () => {
         <br /><br />
         <br />
         <label>
-          Skill Level:
+          Experience:
           <select name="skill_input">
             <option value="blank"></option>
-            <option value="novice">Novice</option>
-            <option value="advanced_beginner">Advanced Beginner</option>
-            <option value="competent">Competent</option>
-            <option value="proficient">Proficient</option>
-            <option value="expert">Expert</option>
+            <option value="novice">Student</option>
+            <option value="advanced_beginner">Advanced Student</option>
+            <option value="competent">Graduate</option>
+            <option value="proficient">Less than 5 Years</option>
+            <option value="expert">More than 5 Years</option>
           </select>
         </label>
         <label>
