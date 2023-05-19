@@ -108,7 +108,6 @@ async function get_questions(type) {
 async function get_matches(user_id) {
     // get user
     const user = await get_user(user_id);
-
     // get all users of opposite type
     let options = await get_users();
     if (user.type !== "both") {
@@ -167,11 +166,11 @@ async function get_matches(user_id) {
     options.sort((a, b) => b.score - a.score);
 
     // remap the scoring as a percentage match // NEEDS REWORKED
-    maxScore = options[0].score;
+    maxScore = options[0].hasOwnProperty("score") ? options[0].score : 1;
     options.forEach(option => option.score = (option.score / maxScore) * 100)
 
     // filter for score has to reach a certain threshold
-    const MATCH_THRESHOLD = 0;
+    const MATCH_THRESHOLD = 1;
     options = options.filter(match => match.score >= MATCH_THRESHOLD);
 
     return options

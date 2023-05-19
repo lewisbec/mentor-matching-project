@@ -15,6 +15,7 @@ export const MatchesComponent = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: user.email })
     };
+    
     fetch('/matches', reqOpts)
       .then(response => {
         if (response.ok) {
