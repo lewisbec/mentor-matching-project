@@ -15,8 +15,8 @@ export const MatchesComponent = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: user.email })
     };
-    
-    fetch('/matches', reqOpts)
+
+    fetch('https://api-dot-lithe-site-375901.uc.r.appspot.com/matches', reqOpts)
       .then(response => {
         if (response.ok) {
           return response.json();

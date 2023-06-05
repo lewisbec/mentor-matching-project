@@ -21,7 +21,7 @@ function fromDatastore(item) {
 
 // adding this header to allow the client to be able to fetch from their localhost:3000
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Origin', 'https://lithe-site-375901.uc.r.appspot.com');
     next();
 });
 
@@ -239,7 +239,14 @@ app.get("/questions/:type", async function (req, res) {
 app.get("/test", function (req, res) {
     res.status(200).send("Success");
 });
-app.use(express.static(path.join(__dirname, '../frontend/build/')));
+
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "https://lithe-site-375901.uc.r.appspot.com");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    // Add the 'content-type' header to the list of allowed headers
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    next();
+  });
 
 /* ------------- End Routes ------------- */
 
