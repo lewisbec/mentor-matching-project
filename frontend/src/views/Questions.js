@@ -33,7 +33,7 @@ export const Questions = () => {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       };
-      const res = await fetch(`/users/${user.email}`, reqOpts);
+      const res = await fetch(`https://api-dot-lithe-site-375901.uc.r.appspot.com/users/${user.email}`, reqOpts);
       let data = await res.json();
       data = await JSON.parse(data.questions);
       setUserData(data);
@@ -51,7 +51,8 @@ export const Questions = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: user.email, questions: JSON.stringify(Object.fromEntries(formData)), type: formData.get("mentor_input") })
     };
-    fetch('/users', reqOpts)
+    console.log(reqOpts.body);
+    fetch('https://api-dot-lithe-site-375901.uc.r.appspot.com/users', reqOpts)
     alert("Survey Responses Submitted!\nYou can now use the matching page.");
   }
 
@@ -118,20 +119,20 @@ export const Questions = () => {
         </label>
         <label> Technical Interests:
           <input name="interests_input_1" defaultValue={userData.interests_input_1} />
-          <input type="range" name="interests_input_1_rank" min="1" max="5" defaultValue="3" />
+          <input type="range" name="interests_input_1_rank" min="1" max="5" defaultValue={userData.interests_input_1_rank} />
           <input name="interests_input_2" defaultValue={userData.interests_input_2} />
-          <input type="range" name="interests_input_2_rank" min="1" max="5" defaultValue="3" />
+          <input type="range" name="interests_input_2_rank" min="1" max="5" defaultValue={userData.interests_input_2_rank} />
           <input name="interests_input_3" defaultValue={userData.interests_input_3} />
-          <input type="range" name="interests_input_3_rank" min="1" max="5" defaultValue="3" />
+          <input type="range" name="interests_input_3_rank" min="1" max="5" defaultValue={userData.interests_input_3_rank} />
         </label>
         <br />
         <label> Professional Interests:
           <input name="prof_interests_input_1" defaultValue={userData.prof_interests_input_1} />
-          <input type="range" name="prof_interests_input_1_rank" min="1" max="5" defaultValue="3" />
+          <input type="range" name="prof_interests_input_1_rank" min="1" max="5" defaultValue={userData.prof_interests_input_1_rank} />
           <input name="prof_interests_input_2" defaultValue={userData.prof_interests_input_2} />
-          <input type="range" name="prof_interests_input_2_rank" min="1" max="5" defaultValue="3" />
+          <input type="range" name="prof_interests_input_2_rank" min="1" max="5" defaultValue={userData.prof_interests_input_2_rank} />
           <input name="prof_interests_input_3" defaultValue={userData.prof_interests_input_3} />
-          <input type="range" name="prof_interests_input_3_rank" min="1" max="5" defaultValue="3" />
+          <input type="range" name="prof_interests_input_3_rank" min="1" max="5" defaultValue={userData.prof_interests_input_3_rank} />
         </label>
         <br /><br />
         <br />

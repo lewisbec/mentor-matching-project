@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "07b5390b-54dd-448b-bd15-65c547007d68",
+		"name": "Mentor Matching Final Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create a user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\":\"user_1@gmail.com\",\"questions\":\"{\\\"name_input\\\":\\\"user 1\\\",\\\"mentor_input\\\":\\\"mentor\\\",\\\"useDemographic_input\\\":\\\"true\\\",\\\"interests_input_1\\\":\\\"web dev\\\",\\\"interests_input_1_rank\\\":\\\"3\\\",\\\"interests_input_2\\\":\\\"sys design\\\",\\\"interests_input_2_rank\\\":\\\"3\\\",\\\"interests_input_3\\\":\\\"math\\\",\\\"interests_input_3_rank\\\":\\\"3\\\",\\\"prof_interests_input_1\\\":\\\"resume help\\\",\\\"prof_interests_input_1_rank\\\":\\\"3\\\",\\\"prof_interests_input_2\\\":\\\"job search\\\",\\\"prof_interests_input_2_rank\\\":\\\"3\\\",\\\"prof_interests_input_3\\\":\\\"career growth\\\",\\\"prof_interests_input_3_rank\\\":\\\"3\\\",\\\"skill_input\\\":\\\"novice\\\",\\\"employment_input\\\":\\\"\\\",\\\"design_project\\\":\\\"yes\\\",\\\"expertise_input_1\\\":\\\"\\\",\\\"expertise_input_2\\\":\\\"\\\",\\\"expertise_input_3\\\":\\\"\\\",\\\"association_input\\\":\\\"\\\",\\\"contact_method_input\\\":\\\"user_1@oregonstate.edu\\\",\\\"gender_input\\\":\\\"Male\\\",\\\"gender_input_rank\\\":\\\"3\\\",\\\"race_input\\\":\\\"asian\\\",\\\"race_input_rank\\\":\\\"3\\\"}\",\"type\":\"mentor\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-dot-lithe-site-375901.uc.r.appspot.com/users",
+					"protocol": "https",
+					"host": [
+						"api-dot-lithe-site-375901",
+						"uc",
+						"r",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\":\"user_2@gmail.com\",\"questions\":\"{\\\"name_input\\\":\\\"user 1\\\",\\\"mentor_input\\\":\\\"mentor\\\",\\\"useDemographic_input\\\":\\\"true\\\",\\\"interests_input_1\\\":\\\"web development\\\",\\\"interests_input_1_rank\\\":\\\"3\\\",\\\"interests_input_2\\\":\\\"system design\\\",\\\"interests_input_2_rank\\\":\\\"3\\\",\\\"interests_input_3\\\":\\\"mathematics\\\",\\\"interests_input_3_rank\\\":\\\"3\\\",\\\"prof_interests_input_1\\\":\\\"resume\\\",\\\"prof_interests_input_1_rank\\\":\\\"3\\\",\\\"prof_interests_input_2\\\":\\\"\\\",\\\"prof_interests_input_2_rank\\\":\\\"3\\\",\\\"prof_interests_input_3\\\":\\\"career growth\\\",\\\"prof_interests_input_3_rank\\\":\\\"3\\\",\\\"skill_input\\\":\\\"novice\\\",\\\"employment_input\\\":\\\"\\\",\\\"design_project\\\":\\\"yes\\\",\\\"expertise_input_1\\\":\\\"\\\",\\\"expertise_input_2\\\":\\\"\\\",\\\"expertise_input_3\\\":\\\"\\\",\\\"association_input\\\":\\\"\\\",\\\"contact_method_input\\\":\\\"user_2@oregonstate.edu\\\",\\\"gender_input\\\":\\\"Male\\\",\\\"gender_input_rank\\\":\\\"3\\\",\\\"race_input\\\":\\\"asian\\\",\\\"race_input_rank\\\":\\\"3\\\"}\",\"type\":\"mentee\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-dot-lithe-site-375901.uc.r.appspot.com/users",
+					"protocol": "https",
+					"host": [
+						"api-dot-lithe-site-375901",
+						"uc",
+						"r",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api-dot-lithe-site-375901.uc.r.appspot.com/users/user_1@gmail.com",
+					"protocol": "https",
+					"host": [
+						"api-dot-lithe-site-375901",
+						"uc",
+						"r",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"users",
+						"user_1@gmail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Matches",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": \"user_1@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-dot-lithe-site-375901.uc.r.appspot.com/matches",
+					"protocol": "https",
+					"host": [
+						"api-dot-lithe-site-375901",
+						"uc",
+						"r",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"matches"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
