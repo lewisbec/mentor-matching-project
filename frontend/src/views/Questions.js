@@ -51,6 +51,7 @@ export const Questions = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: user.email, questions: JSON.stringify(Object.fromEntries(formData)), type: formData.get("mentor_input") })
     };
+    console.log(reqOpts.body);
     fetch('https://api-dot-lithe-site-375901.uc.r.appspot.com/users', reqOpts)
     alert("Survey Responses Submitted!\nYou can now use the matching page.");
   }
@@ -89,7 +90,7 @@ export const Questions = () => {
   return (
     <>
       <form method="post" onSubmit={handleSubmit}>
-        <h1>General Information</h1>1
+        <h1>General Information</h1>
         <hr />
         <label>Name:<input name="name_input" defaultValue={userData.name_input} /></label>
         <br />
