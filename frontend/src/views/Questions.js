@@ -46,6 +46,15 @@ export const Questions = () => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
+    var formObj = Object.fromEntries(formData);
+    let race_input = "";
+    for(let i = 1; i < 8; i++) {
+      if (formObj["race_input" + i] !== undefined){
+        race_input += formObj["race_input" + i] + ", ";
+        delete formObj["race_input" + i];
+      }
+    }
+    formObj["race_input"] = race_input.slice(0, -2);
     const reqOpts = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -83,13 +92,14 @@ export const Questions = () => {
         + Hispanic or Latino 
         + Another Race alone
         + Two or more Races
-  
-    
-
   */
   return (
     <>
       <form method="post" onSubmit={handleSubmit}>
+        <h1>Instructions</h1>
+        <hr />
+        <p>For all fields in the form below, please enter up to 100 characters per field. You may include any terms that are most relevant to you. Our matching system will sort them for you.</p>
+        <br />
         <h1>General Information</h1>
         <hr />
         <label>Name:<input name="name_input" defaultValue={userData.name_input} /></label>
@@ -116,6 +126,7 @@ export const Questions = () => {
         <hr />
         <label>
           <em>Use the slider to specify how important a topic is to you.</em>
+          <em></em>
         </label>
         <label> Technical Interests:
           <input name="interests_input_1" defaultValue={userData.interests_input_1} />
@@ -174,7 +185,8 @@ export const Questions = () => {
             </label>
             <br />
             <label>Professional Association:<input name="association_input" defaultValue={userData.association_input} /></label>
-            <br />
+            <br /> <br />
+            <em>This field will be shown to potential mentees to provide a way to reach out to you.</em> <br />
             <label>Contact Method:<input name="contact_method_input" defaultValue={userData.contact_method_input} /></label>
           </div>
 
@@ -187,20 +199,29 @@ export const Questions = () => {
               Gender Identity: <input name="gender_input" />
               <input type="range" name="gender_input_rank" min="1" max="5" defaultValue="3" />
             </label>
-            <br />
+            <br /> <br />
+
             <label>
-              Racial Identity:
-              <select name="race_input">
-                <option value="asian">Asian</option>
-                <option value="black">Black or African American</option>
-                <option value="hispanic">Hispanic or Latino</option>
-                <option value="hawaiian">Native Hawaiian and Other Pacific Islander</option>
-                <option value="white">White</option>
-                <option value="other">Other</option>
-                <option value="NA">Prefer not to Answer</option>
-              </select>
-              <input type="range" name="race_input_rank" min="1" max="5" defaultValue="3" />
+            <em>Choose all that apply.</em>
+            <em></em>
             </label>
+            <br />
+            <label>Racial Identity:</label> <br />
+            <input name="race_input1" type="checkbox" id="asian" value="asian"/>
+            <label htmlFor="asian">Asian</label> <br />
+            <input name="race_input2" type="checkbox" id="black" value="black"/>
+            <label htmlFor="black">Black or African American</label><br />
+            <input name="race_input3" type="checkbox" id="hispanic" value="hispanic"/>
+            <label htmlFor="hispanic">Hispanic or Latino</label><br />
+            <input name="race_input4" type="checkbox" id="hawaiian" value="hawaiian"/>
+            <label htmlFor="hawaiian">Native Hawaiian and Other Pacific Islander</label><br />
+            <input name="race_input5" type="checkbox" id="white" value="white"/>
+            <label htmlFor="white">White</label><br />
+            <input name="race_input6" type="checkbox" id="other" value="other"/>
+            <label htmlFor="other">Other</label><br />
+            <input name="race_input7" type="checkbox" id="NA" value="NA"/>
+            <label htmlFor="NA">Prefer not to Answer</label><br />
+            <label><input type="range" name="race_input_rank" min="1" max="5" defaultValue="3" /></label>
             <br />
 
           </div>
