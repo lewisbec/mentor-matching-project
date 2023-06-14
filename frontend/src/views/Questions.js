@@ -111,6 +111,8 @@ export const Questions = () => {
           <option value="both">Both</option>
         </select></label>
         <br /><br />
+        Please note that by selecting “Participate in Matching?” you confirm your agreement to allow your contact information to be shared with mentees after admin approval.
+        <br /><br />
         <label>
           Participate in Matching? <input type="checkbox" value="matching" />
         </label>
@@ -200,7 +202,10 @@ export const Questions = () => {
               <input type="range" name="gender_input_rank" min="1" max="5" defaultValue="3" />
             </label>
             <br /> <br />
-
+            <label>
+              Do you identify as a member of the LGBTQ+ community? <input name="lgbtq" type="checkbox" value="LGBTQ+"/>
+            </label>
+             <br /> <br />
             <label>
             <em>Choose all that apply.</em>
             <em></em>
